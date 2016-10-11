@@ -1,7 +1,6 @@
-package fr.mrc.ptichat.connexion;
+package fr.mrc.ptichat.connection;
 
 import java.io.*;
-import java.net.*;
 
 public class Request implements Runnable {
 

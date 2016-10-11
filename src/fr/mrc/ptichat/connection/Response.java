@@ -1,6 +1,5 @@
-package fr.mrc.ptichat.connexion;
+package fr.mrc.ptichat.connection;
 
-import java.awt.*;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -19,7 +18,6 @@ public class Response implements Runnable {
         while(true) {
             System.out.println("Type a message : ");
             message = sc.nextLine();
-            sc.nextLine();
             out.println(message);
             out.flush();
         }

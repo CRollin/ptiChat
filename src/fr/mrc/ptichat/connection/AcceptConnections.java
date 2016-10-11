@@ -1,16 +1,15 @@
-package fr.mrc.ptichat.connexion;
+package fr.mrc.ptichat.connection;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.io.*;
 import java.net.*;
 
-public class AcceptConnexions implements Runnable {
+public class AcceptConnections implements Runnable {
 
     public Thread chatThread;
     private ServerSocket serverSocket = null;
     private Socket socket = null;
 
-    public AcceptConnexions(ServerSocket ss){
+    public AcceptConnections(ServerSocket ss){
         this.serverSocket = ss;
     }
 
