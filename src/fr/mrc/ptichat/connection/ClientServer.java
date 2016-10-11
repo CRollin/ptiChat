@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connexion;
+package fr.mrc.ptichat.connection;
 
 import java.io.*;
 import java.net.*;
@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ClientServer {
 
     public static ServerSocket serverSocket = null;
-    public static Thread acceptConnexionsThread;
+    public static Thread acceptconnectionsThread;
 
     public static void initiateClientServerSocket(){
         try {
@@ -18,9 +18,9 @@ public class ClientServer {
             int port = sc.nextInt();
             serverSocket = new ServerSocket(port);
             System.out.println("Server listening to the port "+serverSocket.getLocalPort());
-            // Handle the connexion requests
-            acceptConnexionsThread = new Thread(new AcceptConnexions(serverSocket));
-            acceptConnexionsThread.start();
+            // Handle the connection requests
+            acceptconnectionsThread = new Thread(new AcceptConnections(serverSocket));
+            acceptconnectionsThread.start();
         } catch (IOException e){
             System.out.println("The port " + serverSocket.getLocalPort() + " is already used.");
         }

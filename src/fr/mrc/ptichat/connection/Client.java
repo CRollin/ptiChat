@@ -1,6 +1,4 @@
-package fr.mrc.ptichat.connexion;
-
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
+package fr.mrc.ptichat.connection;
 
 import java.io.IOException;
 import java.net.*;
@@ -15,7 +13,6 @@ public class Client {
         try {
             System.out.println("\n###### Client's socket Initialisation ######");
             Scanner sc = new Scanner(System.in);
-            System.out.println("Connexion request");
             System.out.println("Host IP address (ex: 127.0.0.1) : ");
             String host = sc.nextLine();
             System.out.println("Port (ex: 9118): ");
@@ -25,7 +22,7 @@ public class Client {
             chatThread = new Thread(new Chat(socket));
             chatThread.start();
         } catch (UnknownHostException e){
-            System.err.println("Connexion to " + socket.getLocalAddress() + " impossible");
+            System.err.println("connection to " + socket.getLocalAddress() + " impossible");
         } catch (IOException e){
             System.err.println("The port " + socket.getLocalPort() + " is already used.");
         }
