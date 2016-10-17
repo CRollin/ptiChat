@@ -1,8 +1,12 @@
 package fr.mrc.ptichat.main.processing;
 
+import fr.mrc.ptichat.main.utils.MessageSignatureController;
+
 public class ResponseHandler {
+    private MessageSignatureController msc;
 
     public ResponseHandler() {
+        this.msc = new MessageSignatureController();
     }
 
     /**
@@ -10,7 +14,7 @@ public class ResponseHandler {
      * @return the <code>byte[]</code> representation of the termination signal
      */
     public byte[] getTerminationBytes() {
-        return "Q".getBytes();
+        return String.valueOf(msc.getTerminationSignature()).getBytes();
     }
 
     /**
@@ -19,7 +23,7 @@ public class ResponseHandler {
      * @return the representation of <code>msg</code>
      */
     public byte[] formatMessage(String msg) {
-        return ("M" + ((msg == null) ? "" : msg)).getBytes();
+        return (msc.getMessageSignature() + ((msg == null) ? "" : msg)).getBytes();
     }
 
 }

@@ -1,10 +1,14 @@
 package fr.mrc.ptichat.main.processing;
 
+import fr.mrc.ptichat.main.utils.MessageSignatureController;
+
 import java.util.Arrays;
 
 public class RequestHandler {
+    private MessageSignatureController msc;
 
     public RequestHandler() {
+        this.msc = new MessageSignatureController();
     }
 
     private boolean checkFirstByte(byte[] input, char expectedChar) {
@@ -17,7 +21,7 @@ public class RequestHandler {
      * @return <code>true</code> if the array represents a message, false otherwise
      */
     public boolean isMessage(byte[] input) {
-        return this.checkFirstByte(input, 'M');
+        return this.checkFirstByte(input, msc.getMessageSignature());
     }
 
     /**
@@ -26,7 +30,7 @@ public class RequestHandler {
      * @return <code>true</code> if the array represents a termination signal, false otherwise
      */
     public boolean isTerminationBytes(byte[] input) {
-        return this.checkFirstByte(input, 'Q');
+        return this.checkFirstByte(input, msc.getTerminationSignature());
     }
 
     /**
