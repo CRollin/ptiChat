@@ -16,7 +16,7 @@ public class MainTest {
         System.out.println("Setting up ...");
         this.main = new Main();
     }
-    
+
     @Test
     public void testExample() throws Exception {
         Assert.assertNotNull(main);
