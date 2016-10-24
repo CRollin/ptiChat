@@ -9,7 +9,7 @@ public class MessageSignatureController {
     public MessageSignatureController() {
         ps = new Properties();
         try {
-            ps.load(new java.io.FileInputStream("./src/resources/messageSignature.properties"));
+            ps.load(new java.io.FileInputStream("./src/fr/mrc/ptichat/resources/messageSignature.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
