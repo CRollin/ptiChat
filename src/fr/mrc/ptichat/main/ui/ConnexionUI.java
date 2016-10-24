@@ -1,6 +1,7 @@
 package fr.mrc.ptichat.main.ui;
 
 import fr.mrc.ptichat.main.utils.LanguagesController;
+import fr.mrc.ptichat.main.utils.UIStyleController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,7 +9,8 @@ import java.awt.*;
 
 public class ConnexionUI extends JFrame {
 
-    private LanguagesController languagesController = new LanguagesController("English");
+    private LanguagesController languagesController = new LanguagesController("French");
+    private UIStyleController uiStyleController = new UIStyleController();
 
     public ConnexionUI() {
         this.setGlobalParameters();
@@ -25,8 +27,10 @@ public class ConnexionUI extends JFrame {
      */
     private void setGlobalParameters(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(500, 100));
-        this.setResizable(false);
+        Dimension d = new Dimension(this.uiStyleController.getIntValue("connexionWindow.width"),
+                this.uiStyleController.getIntValue("connexionWindow.height"));
+        this.setMinimumSize(d);
+        this.setResizable(this.uiStyleController.getBooleanValue("connexionWindow.resizable"));
         this.setLocationRelativeTo(null);
     }
 
@@ -35,13 +39,14 @@ public class ConnexionUI extends JFrame {
      * Divides the window into three rows, containing respectively the title, the form and the validation button.
      */
     private void createUI() {
-        this.setLayout(new BorderLayout(10, 10));
+        int borderWidth = this.uiStyleController.getIntValue("border.width");
+        this.setLayout(new BorderLayout(borderWidth, borderWidth));
         JPanel titlePanel = new JPanel();
         JPanel formPanel = new JPanel();
         JPanel validationPanel = new JPanel();
-        titlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        formPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        validationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        titlePanel.setBorder(new EmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth));
+        formPanel.setBorder(new EmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth));
+        validationPanel.setBorder(new EmptyBorder(borderWidth, borderWidth, borderWidth, borderWidth));
         this.initTitlePanel(titlePanel);
         this.initConnexionForm(formPanel);
         this.initValidationPanel(validationPanel);
@@ -65,24 +70,20 @@ public class ConnexionUI extends JFrame {
      * @param container the <code>Container</code> to fulfill
      */
     private void initConnexionForm(Container container) {
-        JLabel userIPLabel = this.createLabel("USER_IP");
-        JLabel userPortLabel = this.createLabel("USER_PORT");
-        JLabel peerIPLabel = this.createLabel("PEER_IP");
-        JLabel peerPortLabel = this.createLabel("PEER_PORT");
-        JPanel userIPPanel = this.createInput();
-        JPanel userPortPanel = this.createInput();
-        JPanel peerIPPanel = this.createInput();
-        JPanel peerPortPanel = this.createInput();
-        GridLayout gl = new GridLayout(2, 4, 50, 10);
+        String[] inputList = this.uiStyleController.getArrayValue("connexionWindow.grid.elements");
+
+        GridLayout gl = new GridLayout(this.uiStyleController.getIntValue("connexionWindow.grid.height"),
+                this.uiStyleController.getIntValue("connexionWindow.grid.width"),
+                this.uiStyleController.getIntValue("connexionWindow.grid.hgap"),
+                this.uiStyleController.getIntValue("connexionWindow.grid.vgap"));
         container.setLayout(gl);
-        container.add(userIPLabel);
-        container.add(userIPPanel);
-        container.add(userPortLabel);
-        container.add(userPortPanel);
-        container.add(peerIPLabel);
-        container.add(peerIPPanel);
-        container.add(peerPortLabel);
-        container.add(peerPortPanel);
+        for(String s:inputList) {
+            JLabel label = this.createLabel(s);
+            JPanel panel = this.createInput();
+            container.add(label);
+            container.add(panel);
+
+        }
     }
 
     /**
@@ -101,7 +102,9 @@ public class ConnexionUI extends JFrame {
      */
     private JPanel createInput(){
         JTextField input = new JTextField();
-        input.setPreferredSize(new Dimension(150, 20));
+        Dimension inputDim =  new Dimension(this.uiStyleController.getIntValue("input.width"),
+                this.uiStyleController.getIntValue("input.height"));
+        input.setPreferredSize(inputDim);
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout());
         inputPanel.add(input);

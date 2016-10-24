@@ -1,5 +1,6 @@
 package fr.mrc.ptichat.main.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -20,6 +21,11 @@ public class LanguagesController {
 
 
     public String getWord(String keyword) {
-        return this.translation.getString(keyword);
+        String value = this.translation.getString(keyword);
+        try {
+            return new String(value.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return value;
+        }
     }
 }
