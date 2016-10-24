@@ -3,27 +3,36 @@ package fr.mrc.ptichat.connection;
 import java.io.*;
 import java.net.*;
 
-public class AcceptConnections implements Runnable {
+/**
+ * Handles all the connections requests to the ClientServer.
+ */
+public class AcceptConnectionsRunnable implements Runnable {
 
-    public Thread chatThread;
+    private boolean resume;
     private ServerSocket serverSocket = null;
     private Socket socket = null;
+    private Thread chatThread;
 
-    public AcceptConnections(ServerSocket ss){
+    public AcceptConnectionsRunnable(ServerSocket ss){
         this.serverSocket = ss;
     }
 
     @Override
     public void run() {
         try {
-            while(true){
+            while(!resume){
                 socket = serverSocket.accept();
                 System.out.println("Someone wants to connect to you.");
-                chatThread = new Thread(new Chat(socket));
+                // Create Chat Thread
+                chatThread = new Thread(new ChatRunnable(socket));
                 chatThread.start();
             }
         } catch (IOException e){
             System.err.println("Server Error");
         }
+    }
+
+    public void stop(){
+        resume = true;
     }
 }
