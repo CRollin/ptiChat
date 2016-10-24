@@ -1,6 +1,7 @@
 package fr.mrc.ptichat.test;
 
 import fr.mrc.ptichat.main.Main;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
