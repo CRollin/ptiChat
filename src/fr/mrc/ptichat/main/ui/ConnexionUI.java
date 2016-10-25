@@ -71,7 +71,6 @@ public class ConnexionUI extends JFrame {
      */
     private void initConnexionForm(Container container) {
         String[] inputList = this.uiStyleController.getArrayValue("connexionWindow.grid.elements");
-
         GridLayout gl = new GridLayout(this.uiStyleController.getIntValue("connexionWindow.grid.height"),
                 this.uiStyleController.getIntValue("connexionWindow.grid.width"),
                 this.uiStyleController.getIntValue("connexionWindow.grid.hgap"),
@@ -82,7 +81,6 @@ public class ConnexionUI extends JFrame {
             JPanel panel = this.createInput();
             container.add(label);
             container.add(panel);
-
         }
     }
 
@@ -109,7 +107,7 @@ public class ConnexionUI extends JFrame {
         inputPanel.setLayout(new FlowLayout());
         inputPanel.add(input);
         return inputPanel;
-    };
+    }
 
     /**
      * Creates a label with a given text.
