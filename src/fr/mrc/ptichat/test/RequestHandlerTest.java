@@ -29,6 +29,13 @@ public class RequestHandlerTest {
     }
 
     @Test
+    public void isFileTransmission() {
+        assertFalse(rh.isFileTransmission(null));
+        assertTrue(rh.isFileTransmission("F".getBytes()));
+        assertTrue(rh.isFileTransmission("Fuck you ;)".getBytes()));
+    }
+
+    @Test
     public void getMessage() throws Exception {
         try { // null should throw IllegalArgumentException
             assertEquals("toto", rh.getMessage(null));

@@ -2,6 +2,8 @@ package fr.mrc.ptichat.main.processing;
 
 import fr.mrc.ptichat.main.utils.MessageSignatureController;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class RequestHandler {
@@ -34,6 +36,15 @@ public class RequestHandler {
     }
 
     /**
+     * Checks if an array of bytes encodes a file transmission.
+     * @param input the <code>byte[]</code> to check
+     * @return <code>true</code> if the array represents a file transmission, <code>false</code> otherwise
+     */
+    public boolean isFileTransmission(byte[] input) {
+        return this.checkFirstByte(input, 'F');
+    }
+
+    /**
      * Decodes an array of byte into a message.
      * @throws IllegalArgumentException if the input is not an encoded message
      * @param input the <code>byte[]</code> to decode
@@ -42,6 +53,26 @@ public class RequestHandler {
     public String getMessage(byte[] input) {
         if (!this.isMessage(input)) throw new IllegalArgumentException();
         return new String(Arrays.copyOfRange(input, 1, input.length));
+    }
+
+    /**
+     * Saves a <code>byte[]</code> into a file at the specified destination.
+     * @throws IllegalArgumentException if the input is not an encoded file transmission
+     * @param fileName the destination of the file
+     * @param bytes the <code>byte[]</code> to write
+     * @return <code>true</code> if the write was completed, <code>false</code> otherwise
+     */
+    public boolean byteArrayToFile(String fileName, byte[] bytes) {
+        if (isFileTransmission(bytes)) {
+            try {
+                FileOutputStream fos = new FileOutputStream(fileName);
+                fos.write(bytes, 1, bytes.length - 1);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else throw new IllegalArgumentException();
     }
 
 }
