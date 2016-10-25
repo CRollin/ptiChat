@@ -1,6 +1,7 @@
-package fr.mrc.ptichat.test;
+package main.java.fr.mrc.ptichat.test;
 
-import fr.mrc.ptichat.main.Main;
+import main.java.fr.mrc.ptichat.Main;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,6 @@ public class MainTest {
     @Test
     public void testExample() throws Exception {
         Assert.assertNotNull(main);
-        Assert.assertTrue(true);
     }
 
 }

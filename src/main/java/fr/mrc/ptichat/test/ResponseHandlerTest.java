@@ -1,9 +1,9 @@
-package fr.mrc.ptichat.test;
+package main.java.fr.mrc.ptichat.test;
 
-import fr.mrc.ptichat.main.processing.ResponseHandler;
+import main.java.fr.mrc.ptichat.processing.ResponseHandler;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 public class ResponseHandlerTest {
 

@@ -1,7 +1,7 @@
-package fr.mrc.ptichat.main.ui;
+package main.java.fr.mrc.ptichat.ui;
 
-import fr.mrc.ptichat.main.utils.LanguagesController;
-import fr.mrc.ptichat.main.utils.UIStyleController;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
+import main.java.fr.mrc.ptichat.utils.UIStyleController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

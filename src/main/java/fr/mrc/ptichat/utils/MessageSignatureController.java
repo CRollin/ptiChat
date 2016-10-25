@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.main.utils;
+package main.java.fr.mrc.ptichat.utils;
 
 public class MessageSignatureController extends propertiesController {
 
