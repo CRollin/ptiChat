@@ -1,18 +1,11 @@
 package main.java.fr.mrc.ptichat.utils;
 
-import java.io.IOException;
-import java.util.Properties;
+public class MessageSignatureController extends propertiesController {
 
-public class MessageSignatureController {
-    Properties ps;
+    static String propFileName = "messageSignature.properties";
 
     public MessageSignatureController() {
-        ps = new Properties();
-        try {
-            ps.load(new java.io.FileInputStream("./src/main/java/resources/messageSignature.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        super(propFileName);
     }
 
     public char getRequestSignature() {

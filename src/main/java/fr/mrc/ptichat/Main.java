@@ -3,6 +3,7 @@ package main.java.fr.mrc.ptichat;
 import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.connection.Input;
+import main.java.fr.mrc.ptichat.ui.ConnexionUI;
 
 
 /**
@@ -10,11 +11,12 @@ import main.java.fr.mrc.ptichat.connection.Input;
  */
 public class Main {
 
-    /**
-     * Creates the chat in the console
-     * @param args
-     */
-    public static void main(String[] args) {
+    static void UIProgramme(){
+        ConnexionUI cui = new ConnexionUI();
+        cui.open();
+    }
+
+    static void connectionProgramme(){
         // TODO: Replace this method by linking the classes ClientServer and Client to the UI (JFrame)
         Input input = new Input();
         // Initiate the Client Server
@@ -30,6 +32,10 @@ public class Main {
         } else {
             System.out.println("\n###### Waiting for a connection ######");
         }
+    }
+
+    public static void main(String[] args) {
+        connectionProgramme();
     }
 
 }
