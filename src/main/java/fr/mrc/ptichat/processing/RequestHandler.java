@@ -1,6 +1,6 @@
-package fr.mrc.ptichat.main.processing;
+package main.java.fr.mrc.ptichat.processing;
 
-import fr.mrc.ptichat.main.utils.MessageSignatureController;
+import main.java.fr.mrc.ptichat.utils.MessageSignatureController;
 
 import java.util.Arrays;
 

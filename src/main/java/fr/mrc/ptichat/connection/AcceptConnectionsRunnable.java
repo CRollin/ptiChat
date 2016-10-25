@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.io.*;
 import java.net.*;
@@ -17,15 +17,14 @@ public class AcceptConnectionsRunnable implements Runnable {
         this.serverSocket = ss;
     }
 
-    @Override
     public void run() {
         try {
-            while(!resume){
-                socket = serverSocket.accept();
+            while(!this.resume){
+                this.socket = this.serverSocket.accept();
                 System.out.println("Someone wants to connect to you.");
                 // Create Chat Thread
-                chatThread = new Thread(new ChatRunnable(socket));
-                chatThread.start();
+                this.chatThread = new Thread(new ChatRunnable(this.socket));
+                this.chatThread.start();
             }
         } catch (IOException e){
             System.err.println("Server Error");
@@ -33,6 +32,6 @@ public class AcceptConnectionsRunnable implements Runnable {
     }
 
     public void stop(){
-        resume = true;
+        this.resume = true;
     }
 }

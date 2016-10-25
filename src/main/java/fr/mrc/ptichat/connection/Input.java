@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.util.Scanner;
 

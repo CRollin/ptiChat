@@ -1,8 +1,7 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.util.Scanner;
 
 /**
  * Handles the messages to send
@@ -24,16 +23,16 @@ public class ResponseRunnable implements Runnable {
 
     public void run(){
         // TODO: when linking this code to the UI, remove the "System.out.println()" function
-        while(!resume) {
-            System.out.println("Type a message to " + address + ":" + port +  " : ");
-            message = input.getInput();
-            out.println(message);
-            out.flush();
+        while(!this.resume) {
+            System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
+            this.message = this.input.getInput();
+            this.out.println(this.message);
+            this.out.flush();
         }
-        out.close();
+        this.out.close();
     }
 
     public void stop(){
-        resume = true;
+        this.resume = true;
     }
 }

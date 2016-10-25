@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.io.*;
 import java.net.*;
@@ -20,12 +20,12 @@ public class ChatRunnable implements Runnable {
 
     public void run(){
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream());
-            requestThread = new Thread(new RequestRunnable(in, socket.getLocalAddress(), socket.getLocalPort()));
-            requestThread.start();
-            responseThread = new Thread(new ResponseRunnable(out, socket.getLocalAddress(), socket.getLocalPort()));
-            responseThread.start();
+            this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            this.out = new PrintWriter(this.socket.getOutputStream());
+            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort()));
+            this.requestThread.start();
+            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort()));
+            this.responseThread.start();
         } catch(IOException e){
             System.err.println("Someone just disconnected from ptit Chat.");
         }

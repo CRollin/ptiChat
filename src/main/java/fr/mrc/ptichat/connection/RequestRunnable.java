@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -22,15 +22,15 @@ public class RequestRunnable implements Runnable {
 
     public void run(){
         // TODO: when linking this code to the UI, remove the "System.out.println()" function
-        while(!resume){
+        while(!this.resume){
             try {
-                message = in.readLine();
-                System.out.println("Received (me: " + address + ":" + port + ") : " + message);
+                this.message = this.in.readLine();
+                System.out.println("Received (me: " + this.address + ":" + this.port + ") : " + this.message);
             } catch (IOException e){
                 e.printStackTrace();
             }
         }
     }
 
-    public void stop() { resume = true; }
+    public void stop() { this.resume = true; }
 }

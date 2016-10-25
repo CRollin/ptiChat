@@ -14,5 +14,6 @@ hs_err_pid*
 # project files
 .idea
 out
+target
 ptiChat.iml
 

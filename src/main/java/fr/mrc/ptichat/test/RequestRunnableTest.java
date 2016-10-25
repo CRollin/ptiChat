@@ -1,6 +1,6 @@
-package fr.mrc.ptichat.test;
+package main.java.fr.mrc.ptichat.test;
 
-import fr.mrc.ptichat.connection.RequestRunnable;
+import main.java.fr.mrc.ptichat.connection.RequestRunnable;
 
 import org.junit.After;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.main.utils;
+package main.java.fr.mrc.ptichat.utils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -9,7 +9,7 @@ public class MessageSignatureController {
     public MessageSignatureController() {
         ps = new Properties();
         try {
-            ps.load(new java.io.FileInputStream("./src/resources/messageSignature.properties"));
+            ps.load(new java.io.FileInputStream("./src/main/java/resources/messageSignature.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

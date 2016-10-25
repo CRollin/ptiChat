@@ -1,4 +1,4 @@
-package fr.mrc.ptichat.connection;
+package main.java.fr.mrc.ptichat.connection;
 
 import java.io.IOException;
 import java.net.*;
@@ -8,26 +8,26 @@ import java.net.*;
  */
 public class Client {
 
-    private static Socket socket = null;
-    private static Thread chatThread;
+    private Socket socket = null;
+    private Thread chatThread;
 
     /**
      * Initiate a socket between the client and the ServerSocket matching the host and port address.
      */
-    public static void initiateClientSocket(){
+    public void initiateClientSocket(){
         try {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
             String host = getHost();
             int port = getPort();
-            socket = new Socket(host, port);
+            this.socket = new Socket(host, port);
             // Create Chat Thread
-            chatThread = new Thread(new ChatRunnable(socket));
-            chatThread.start();
+            this.chatThread = new Thread(new ChatRunnable(this.socket));
+            this.chatThread.start();
         } catch (UnknownHostException e){
-            System.err.println("connection to " + socket.getLocalAddress() + " impossible");
+            System.err.println("connection to " + this.socket.getLocalAddress() + " impossible");
         } catch (IOException e){
-            System.err.println("The port " + socket.getLocalPort() + " is already used.");
+            System.err.println("The port " + this.socket.getLocalPort() + " is already used.");
         }
     }
 
