@@ -1,5 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
+import main.java.fr.mrc.ptichat.exceptions.NoServerException;
+
 import java.io.IOException;
 import java.net.*;
 
@@ -14,7 +16,7 @@ public class Client {
     /**
      * Initiate a socket between the client and the ServerSocket matching the host and port address.
      */
-    public void initiateClientSocket(){
+    public void initiateClientSocket() throws NoServerException {
         try {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
@@ -25,9 +27,9 @@ public class Client {
             this.chatThread = new Thread(new ChatRunnable(this.socket));
             this.chatThread.start();
         } catch (UnknownHostException e){
-            System.err.println("connection to " + this.socket.getLocalAddress() + " impossible");
+            System.err.println("connection impossible");
         } catch (IOException e){
-            System.err.println("The port " + this.socket.getLocalPort() + " is already used.");
+            throw new NoServerException();
         }
     }
 

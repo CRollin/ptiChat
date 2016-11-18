@@ -27,7 +27,7 @@ public class ClientServer {
             this.acceptConnectionsThread = new Thread(new AcceptConnectionsRunnable(this.serverSocket));
             this.acceptConnectionsThread.start();
         } catch (IOException e){
-            System.out.println("The port " + this.serverSocket.getLocalPort() + " is already used.");
+            System.out.println("The port is already used.");
         }
     }
 
