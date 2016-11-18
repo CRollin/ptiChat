@@ -3,6 +3,7 @@ package main.java.fr.mrc.ptichat;
 import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.connection.Input;
+import main.java.fr.mrc.ptichat.exceptions.NoServerException;
 import main.java.fr.mrc.ptichat.ui.ConnexionUI;
 
 
@@ -28,7 +29,11 @@ public class Main {
         String answer = input.getInput();
         if (answer.charAt(0) == 'y'){
             Client client = new Client();
-            client.initiateClientSocket();
+            try {
+                client.initiateClientSocket();
+            } catch (NoServerException e) {
+                // TODO: add logic here when connecting to UI
+            }
         } else {
             System.out.println("\n###### Waiting for a connection ######");
         }
