@@ -32,7 +32,7 @@ public class RequestHandlerTest {
     public void isFileTransmission() {
         assertFalse(rh.isFileTransmission(null));
         assertTrue(rh.isFileTransmission("F".getBytes()));
-        assertTrue(rh.isFileTransmission("Fuck you ;)".getBytes()));
+        assertTrue(rh.isFileTransmission("Finally it works :)".getBytes()));
     }
 
     @Test
