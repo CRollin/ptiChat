@@ -1,18 +1,28 @@
 package main.java.fr.mrc.ptichat.ui;
 
+import main.java.fr.mrc.ptichat.appmanagement.ConnectionManager;
 import main.java.fr.mrc.ptichat.utils.LanguagesController;
 import main.java.fr.mrc.ptichat.utils.UIStyleController;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.*;
+import java.util.Set;
 
-public class ConnexionUI extends JFrame {
+
+public class ConnectionUI extends JFrame {
 
     private LanguagesController languagesController = new LanguagesController("French");
     private UIStyleController uiStyleController = new UIStyleController();
+    private Hashtable<String, JTextField> formFields = new Hashtable<String, JTextField>();
+    private ConnectionManager cm = ConnectionManager.geConnectionManagerInstance();
 
-    public ConnexionUI() {
+    public ConnectionUI() {
         this.setGlobalParameters();
         this.createUI();
         this.pack();
@@ -78,7 +88,7 @@ public class ConnexionUI extends JFrame {
         container.setLayout(gl);
         for(String s:inputList) {
             JLabel label = this.createLabel(s);
-            JPanel panel = this.createInput();
+            JPanel panel = this.createInput(s);
             container.add(label);
             container.add(panel);
         }
@@ -91,6 +101,7 @@ public class ConnexionUI extends JFrame {
     private void initValidationPanel(Container container) {
         JButton startButton = new JButton();
         startButton.setText(this.languagesController.getWord("START"));
+        startButton.addActionListener(e -> this.start(e));
         container.add(startButton);
     }
 
@@ -98,7 +109,7 @@ public class ConnexionUI extends JFrame {
      * Creates a panel containing an input with fixed size.
      * @return the created <code>JPanel</code>
      */
-    private JPanel createInput(){
+    private JPanel createInput(String id){
         JTextField input = new JTextField();
         Dimension inputDim =  new Dimension(this.uiStyleController.getIntValue("input.width"),
                 this.uiStyleController.getIntValue("input.height"));
@@ -106,6 +117,7 @@ public class ConnexionUI extends JFrame {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new FlowLayout());
         inputPanel.add(input);
+        this.formFields.put(id, input);
         return inputPanel;
     }
 
@@ -118,5 +130,16 @@ public class ConnexionUI extends JFrame {
         JLabel label = new JLabel();
         label.setText(this.languagesController.getWord(key));
         return label;
+    }
+
+    private Hashtable<String, String> start(ActionEvent e) {
+        Hashtable<String, String> data = new Hashtable<>();
+        Set<Entry<String, JTextField>> setFormFields = this.formFields.entrySet();
+        Iterator<Entry<String, JTextField>> it = setFormFields.iterator();
+        while(it.hasNext()){
+            Entry<String, JTextField> entry = it.next();
+            data.put(entry.getKey(), entry.getValue().getText());
+        }
+        this.cm.initConnection(data);
     }
 }

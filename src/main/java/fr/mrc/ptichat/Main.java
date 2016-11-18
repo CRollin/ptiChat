@@ -3,7 +3,7 @@ package main.java.fr.mrc.ptichat;
 import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.connection.Input;
-import main.java.fr.mrc.ptichat.ui.ConnexionUI;
+import main.java.fr.mrc.ptichat.ui.ConnectionUI;
 
 
 /**
@@ -12,7 +12,7 @@ import main.java.fr.mrc.ptichat.ui.ConnexionUI;
 public class Main {
 
     static void UIProgramme(){
-        ConnexionUI cui = new ConnexionUI();
+        ConnectionUI cui = new ConnectionUI();
         cui.open();
     }
 
@@ -35,7 +35,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        connectionProgramme();
+        UIProgramme();
     }
 
 }
