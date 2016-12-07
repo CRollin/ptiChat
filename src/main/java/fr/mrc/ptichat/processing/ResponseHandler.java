@@ -27,10 +27,9 @@ public class ResponseHandler {
     public byte[] fileToByteArray(String filename) {
         File fileToSend = new File(filename);
         int n;
-        byte[] result = new byte[(int) fileToSend.length() + 1];
-        result[0] = (byte) 'F';
+        byte[] result = new byte[(int) fileToSend.length()];
         try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileToSend))) {
-            n = bis.read(result, 1, result.length - 1);
+            n = bis.read(result, 0, result.length - 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
