@@ -1,8 +1,6 @@
 package main.java.fr.mrc.ptichat.ui;
 
 import main.java.fr.mrc.ptichat.appmanagement.ConnectionManager;
-import main.java.fr.mrc.ptichat.utils.LanguagesController;
-import main.java.fr.mrc.ptichat.utils.UIStyleController;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -10,45 +8,28 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.*;
 import java.util.Set;
 
 
-public class ConnectionUI extends JFrame {
+public class ConnectionUI extends GenericUI {
 
-    private LanguagesController languagesController = new LanguagesController("French");
-    private UIStyleController uiStyleController = new UIStyleController();
-    private Hashtable<String, JTextField> formFields = new Hashtable<String, JTextField>();
-    private ConnectionManager cm = ConnectionManager.geConnectionManagerInstance();
+    private Hashtable<String, JTextField> formFields;
+    private JTextArea errorTextArea;
+    private ConnectionManager cm;
 
-    public ConnectionUI() {
-        this.setGlobalParameters();
-        this.createUI();
-        this.pack();
-    }
-
-    public void open(){
-        this.setVisible(true);
-    }
-
-    /**
-     * Formats the connexion window.
-     */
-    private void setGlobalParameters(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Dimension d = new Dimension(this.uiStyleController.getIntValue("connexionWindow.width"),
-                this.uiStyleController.getIntValue("connexionWindow.height"));
-        this.setMinimumSize(d);
-        this.setResizable(this.uiStyleController.getBooleanValue("connexionWindow.resizable"));
-        this.setLocationRelativeTo(null);
+    public ConnectionUI(ConnectionManager cm) {
+        super("connectionWindow");
+        this.cm = cm;
     }
 
     /**
      * Creates the global architecture of the window.
      * Divides the window into three rows, containing respectively the title, the form and the validation button.
      */
-    private void createUI() {
+    @Override()
+    protected void createUI() {
+        this.formFields = new Hashtable<>();
         int borderWidth = this.uiStyleController.getIntValue("border.width");
         this.setLayout(new BorderLayout(borderWidth, borderWidth));
         JPanel titlePanel = new JPanel();
@@ -80,11 +61,11 @@ public class ConnectionUI extends JFrame {
      * @param container the <code>Container</code> to fulfill
      */
     private void initConnexionForm(Container container) {
-        String[] inputList = this.uiStyleController.getArrayValue("connexionWindow.grid.elements");
-        GridLayout gl = new GridLayout(this.uiStyleController.getIntValue("connexionWindow.grid.height"),
-                this.uiStyleController.getIntValue("connexionWindow.grid.width"),
-                this.uiStyleController.getIntValue("connexionWindow.grid.hgap"),
-                this.uiStyleController.getIntValue("connexionWindow.grid.vgap"));
+        String[] inputList = this.uiStyleController.getArrayValue("connectionWindow.grid.elements");
+        GridLayout gl = new GridLayout(this.uiStyleController.getIntValue("connectionWindow.grid.height"),
+                this.uiStyleController.getIntValue("connectionWindow.grid.width"),
+                this.uiStyleController.getIntValue("connectionWindow.grid.hgap"),
+                this.uiStyleController.getIntValue("connectionWindow.grid.vgap"));
         container.setLayout(gl);
         for(String s:inputList) {
             JLabel label = this.createLabel(s);
@@ -99,9 +80,17 @@ public class ConnectionUI extends JFrame {
      * @param container the <code>Container</code> to fulfill
      */
     private void initValidationPanel(Container container) {
+        FlowLayout flowLayout = new FlowLayout();
+        container.setLayout(flowLayout);
+        flowLayout.setAlignment(FlowLayout.RIGHT);
         JButton startButton = new JButton();
         startButton.setText(this.languagesController.getWord("START"));
         startButton.addActionListener(e -> this.start(e));
+        this.errorTextArea = new JTextArea();
+        this.errorTextArea.setBackground(container.getBackground());
+        this.errorTextArea.setEditable(false);
+        this.errorTextArea.setForeground(Color.red);
+        container.add(this.errorTextArea);
         container.add(startButton);
     }
 
@@ -132,7 +121,7 @@ public class ConnectionUI extends JFrame {
         return label;
     }
 
-    private Hashtable<String, String> start(ActionEvent e) {
+    private void start(ActionEvent e) {
         Hashtable<String, String> data = new Hashtable<>();
         Set<Entry<String, JTextField>> setFormFields = this.formFields.entrySet();
         Iterator<Entry<String, JTextField>> it = setFormFields.iterator();
@@ -141,5 +130,9 @@ public class ConnectionUI extends JFrame {
             data.put(entry.getKey(), entry.getValue().getText());
         }
         this.cm.initConnection(data);
+    }
+
+    public void addErrorMessage(String m){
+        this.errorTextArea.setText(m);
     }
 }
