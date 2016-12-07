@@ -31,7 +31,7 @@ public class RequestHandler {
     public boolean byteArrayToFile(String fileName, byte[] bytes) {
         try {
             FileOutputStream fos = new FileOutputStream(fileName);
-            fos.write(bytes, 1, bytes.length - 1);
+            fos.write(bytes, 0, bytes.length - 1);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
