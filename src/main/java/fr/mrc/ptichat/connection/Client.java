@@ -16,18 +16,15 @@ public class Client {
     /**
      * Initiate a socket between the client and the ServerSocket matching the host and port address.
      */
-    public void initiateClientSocket() throws NoServerException {
+    public void initiateClientSocket(String hostIp, int port) throws NoServerException {
         try {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
-            String host = getHost();
-            int port = getPort();
-            this.socket = new Socket(host, port);
-            // Create Chat Thread
+            this.socket = new Socket(hostIp, port);
             this.chatThread = new Thread(new ChatRunnable(this.socket));
             this.chatThread.start();
         } catch (UnknownHostException e){
-            System.err.println("connection impossible");
+            throw new NoServerException();
         } catch (IOException e){
             throw new NoServerException();
         }
