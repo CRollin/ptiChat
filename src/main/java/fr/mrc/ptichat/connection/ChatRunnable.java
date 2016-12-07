@@ -13,6 +13,7 @@ public class ChatRunnable implements Runnable {
     private PrintWriter out = null;
     private Socket socket = null;
     private Thread requestThread, responseThread;
+    private Flag flag = new Flag();
 
     public ChatRunnable(Socket socket){
         this.socket = socket;
@@ -22,12 +23,16 @@ public class ChatRunnable implements Runnable {
         try {
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new PrintWriter(this.socket.getOutputStream());
-            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort()));
+            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag));
             this.requestThread.start();
-            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort()));
+            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag));
             this.responseThread.start();
+            while(!this.flag.getFlag()) {
+                //Wait
+            }
+            this.responseThread.interrupt();
         } catch(IOException e){
-            System.err.println("Someone just disconnected from ptit Chat.");
+            e.printStackTrace();
         }
     }
 
@@ -37,4 +42,5 @@ public class ChatRunnable implements Runnable {
     public Thread getResponseThread(){
         return this.responseThread;
     }
+
 }
