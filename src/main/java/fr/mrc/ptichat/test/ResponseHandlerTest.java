@@ -1,9 +1,14 @@
 package main.java.fr.mrc.ptichat.test;
 
+
+import main.java.fr.mrc.ptichat.processing.RequestHandler;
 import main.java.fr.mrc.ptichat.processing.ResponseHandler;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
+import java.io.File;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ResponseHandlerTest {
 
@@ -11,13 +16,17 @@ public class ResponseHandlerTest {
 
     @Test
     public void getTerminationBytes() throws Exception {
-        assertArrayEquals("Q".getBytes() , rh.getTerminationBytes());
+        assertEquals("/exit" , rh.getTerminationMessage());
     }
 
     @Test
-    public void formatMessage() throws Exception {
-        assertArrayEquals("M".getBytes() , rh.formatMessage(null));
-        assertArrayEquals("Mtoto".getBytes() , rh.formatMessage("toto"));
+    public void fileToByteArray() {
+        RequestHandler reqH = new RequestHandler();
+        String pathToTesResources = "./src/main/java/fr/mrc/ptichat/test/resources";
+        byte[] toto = rh.fileToByteArray(pathToTesResources + "/test.jpg");
+        reqH.byteArrayToFile(pathToTesResources + "/test2.jpg", toto);
+        File newFile = new File(pathToTesResources + "/test2.jpg");
+        assertTrue(newFile.exists() && (System.currentTimeMillis() - newFile.lastModified()) <= 5000L);
     }
 
 }

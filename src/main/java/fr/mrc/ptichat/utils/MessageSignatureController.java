@@ -17,8 +17,8 @@ public class MessageSignatureController extends propertiesController {
     public char getMessageSignature() {
         return ps.getProperty("MESSAGE").charAt(0);
     }
-    public char getTerminationSignature() {
-        return ps.getProperty("QUIT").charAt(0);
+    public String getTerminationSignature() {
+        return ps.getProperty("QUIT");
     }
 
 }
