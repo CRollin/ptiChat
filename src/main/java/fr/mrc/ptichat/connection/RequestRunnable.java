@@ -1,6 +1,6 @@
 package main.java.fr.mrc.ptichat.connection;
 
-import main.java.fr.mrc.ptichat.processing.RequestHandler;
+import main.java.fr.mrc.ptichat.processing.MessageHandler;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -13,7 +13,7 @@ public class RequestRunnable implements Runnable {
     private BufferedReader in;
     private InetAddress address;
     private int port;
-    private RequestHandler rh = new RequestHandler();
+    private MessageHandler mh = new MessageHandler();
     private Flag stopFlag;
 
     public RequestRunnable(BufferedReader in, InetAddress address, int port, Flag stopFlag){
@@ -30,9 +30,11 @@ public class RequestRunnable implements Runnable {
             try {
                 if (this.in.ready()) {
                     message = this.in.readLine();
-                    if (rh.isTerminationMessage(message)) {
+                    if (mh.isTerminationMessage(message)) {
                         message = "User left the chat, disconnecting...";
                         this.stop();
+                    } else if (mh.isFileTransmission(message)){
+                        message = mh.messageToFile(message);
                     }
                     System.out.println("Received (me: " + this.address + ":" + this.port + ") : " + message);
                 }
