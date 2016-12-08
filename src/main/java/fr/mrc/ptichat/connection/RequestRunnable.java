@@ -43,7 +43,7 @@ public class RequestRunnable implements Runnable {
                     } else if (mh.isFileTransmission(message)){
                         try {
                             String[] messageParts = mh.getContentFromMessage(message);
-                            message = mh.messageToFile(messageParts[1], messageParts[2]);
+                            message = mh.messageToFile(messageParts[1], messageParts[2], this.chatManager.getSavedFilesDirectory());
                             this.chatManager.receivedFile(messageParts[1]);
                         } catch (IOException e) {
                             message = e.getMessage();

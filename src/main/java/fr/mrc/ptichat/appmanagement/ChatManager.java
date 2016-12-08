@@ -2,12 +2,13 @@ package main.java.fr.mrc.ptichat.appmanagement;
 
 import main.java.fr.mrc.ptichat.ui.ChatUI;
 
-import java.io.IOException;
+import java.io.File;
 
 public class ChatManager {
 
     private AppManager am;
     private String messageToSend;
+    private String savedFilesDirectory = System.getProperty("user.dir") + File.separator + "new_";
     private ChatUI chatUI;
 
     public ChatManager(AppManager am) {
@@ -52,5 +53,11 @@ public class ChatManager {
         this.messageToSend = m;
     }
 
+    public String getSavedFilesDirectory() {
+        return savedFilesDirectory;
+    }
 
+    public void setSavedFilesDirectory(String savedFilesDirectory) {
+        this.savedFilesDirectory = savedFilesDirectory;
+    }
 }
