@@ -8,7 +8,7 @@ import java.awt.*;
 
 public abstract class GenericUI extends JFrame {
 
-    protected LanguagesController languagesController = new LanguagesController("French");
+    protected LanguagesController languagesController = LanguagesController.getInstance();
     protected UIStyleController uiStyleController = new UIStyleController();
     private String windowType;
 
