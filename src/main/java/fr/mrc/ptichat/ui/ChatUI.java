@@ -63,12 +63,12 @@ public class ChatUI extends GenericUI {
     private void initPane(Dimension d, JTextArea ta, String s, Container c){
         ta.setEditable(false);
         ta.setBackground(Color.white);
-        ta.setPreferredSize(d);
         ta.setLineWrap(true);
         ta.append(s + "\n");
         DefaultCaret dc = (DefaultCaret)ta.getCaret();
         dc.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         JScrollPane p = new JScrollPane();
+        p.setPreferredSize(d);
         p.setViewportView(ta);
         c.add(p);
     }
@@ -96,11 +96,12 @@ public class ChatUI extends GenericUI {
 
     private void sendMessage(ActionEvent e){
         String intro = "\n>>>>>>" + " Vous à " +"HH:hh:ss" + "\n";
-        String s = intro + this.chatInput.getText() + "\n";
+        String message = this.chatInput.getText();
+        String s = intro + message + "\n";
         this.chatInput.setText("");
         this.chatInput.grabFocus();
         this.chatArea.append(s);
-        this.chatManager.setMessage(s);
+        this.chatManager.setMessage(message);
     }
 
     public void addMessage(String m){

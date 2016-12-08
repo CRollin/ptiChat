@@ -1,6 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
 //import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 import main.java.fr.mrc.ptichat.processing.MessageHandler;
 
 import java.io.PrintWriter;
@@ -17,14 +18,14 @@ public class ResponseRunnable implements Runnable {
     private Input input = new Input();
     private MessageHandler mh = new MessageHandler();
     private Flag stopFlag;
-        // private ChatManager chatManager;
+    private ChatManager chatManager; //
 
-    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag){ //ChatManager chatManager
+    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag, ChatManager chatManager){ //
         this.address = address;
         this.out = out;
         this.port = port;
         this.stopFlag = stopFlag;
-        //this.chatManager = chatManager;
+        this.chatManager = chatManager; //
     }
 
     public void run(){
@@ -32,7 +33,7 @@ public class ResponseRunnable implements Runnable {
         String message;
         while(!this.stopFlag.getFlag()) {
             System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
-            message = this.input.getInput(); //message = this.chatManager.getMessage()
+            message = this.chatManager.getMessage(); //this.input.getInput();
             if (mh.isTerminationMessage(message)) {
                 this.stop();
             } else if(mh.isFileTransmission(message)){
