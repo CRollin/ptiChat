@@ -3,6 +3,7 @@ package main.java.fr.mrc.ptichat.appmanagement;
 import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.exceptions.NoServerException;
+import main.java.fr.mrc.ptichat.ui.ConnectionUI;
 
 import java.util.Hashtable;
 
@@ -10,29 +11,39 @@ import static java.lang.Integer.parseInt;
 
 public class ConnectionManager {
     private AppManager am;
+    private ConnectionUI cui;
 
     public ConnectionManager(AppManager am) {
         this.am = am;
     }
 
+    public void createUI() {
+        this.cui = new ConnectionUI(this);
+    }
+
+    public void open() {
+        this.cui.open();
+    }
+
+    public void dispose() {
+        this.cui.dispose();
+    }
+
     public void initConnection(Hashtable<String, String> connectionData) {
         try {
-            int hostPort = this.getHostPort(connectionData);
             String hostIp = this.getHostIp(connectionData);
-            Client client = new Client();
-            client.initiateClientSocket(hostIp, hostPort);
-            this.am.initChat("\n###### Client's Initialized");
-        } catch (NoServerException e) {
-            this.am.initChat("\n###### Client's Initialisation failed ######");
+            int hostPort = this.getHostPort(connectionData);
             int serverPort = this.getServerPort(connectionData);
-            ClientServer clientServer = new ClientServer();
-            clientServer.initiateClientServerSocket(serverPort);
-            this.am.initChat("\n###### Server initialized ######");
+            this.am.initConnection(hostIp, hostPort, serverPort);
         } catch (Exception e) {
-            this.am.handleConnectionError("c tou kassé");
+            this.handleConnectionError("L'un des champs est mal rempli");
         }
 
 
+    }
+
+    public void handleConnectionError(String m){
+        this.cui.addErrorMessage(m);
     }
 
     private String getHostIp(Hashtable<String, String> connectionData) {

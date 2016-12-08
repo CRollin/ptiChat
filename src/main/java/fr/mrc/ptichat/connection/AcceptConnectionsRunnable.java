@@ -1,5 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
+import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+
 import java.io.*;
 import java.net.*;
 
@@ -12,8 +14,10 @@ public class AcceptConnectionsRunnable implements Runnable {
     private ServerSocket serverSocket = null;
     private Socket socket = null;
     private Thread chatThread;
+    private ChatManager chatManager;
 
-    public AcceptConnectionsRunnable(ServerSocket ss){
+    public AcceptConnectionsRunnable(ServerSocket ss, ChatManager chatManager){
+        this.chatManager = chatManager;
         this.serverSocket = ss;
     }
 
@@ -23,7 +27,7 @@ public class AcceptConnectionsRunnable implements Runnable {
                 this.socket = this.serverSocket.accept();
                 System.out.println("Someone wants to connect to you.");
                 // Create Chat Thread
-                this.chatThread = new Thread(new ChatRunnable(this.socket));
+                this.chatThread = new Thread(new ChatRunnable(this.socket, this.chatManager));
                 this.chatThread.start();
             }
         } catch (IOException e){

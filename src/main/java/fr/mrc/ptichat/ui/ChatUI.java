@@ -1,6 +1,8 @@
 package main.java.fr.mrc.ptichat.ui;
 
 
+import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
@@ -12,13 +14,17 @@ public class ChatUI extends GenericUI {
     private JTextField chatInput;
     private JTextArea chatArea;
     private String peerIp;
+    private boolean isPeerConnected;
+    private ChatManager chatManager;
 
-    public ChatUI() {
+    public ChatUI(ChatManager chatManager) {
        super("chatWindow");
+        this.chatManager = chatManager;
     }
 
     public void open(String peerIp){
         this.peerIp = peerIp;
+        this.isPeerConnected = this.peerIp != null;
         super.open();
     }
 
@@ -45,7 +51,9 @@ public class ChatUI extends GenericUI {
         flowLayout.setAlignment(FlowLayout.CENTER);
         Dimension chatDim = this.createDimension("chatWindow.chatArea.width", "chatWindow.centerBar.height");
         this.chatArea = new JTextArea();
-        String chatTitle = this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp;
+
+        String chatTitle = isPeerConnected ? this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp
+                :  this.languagesController.getWord("CHAT_WANTING_TITLE");
         Dimension fileDim = this.createDimension("chatWindow.fileArea.width", "chatWindow.centerBar.height");
         JTextArea fileArea = new JTextArea();
         this.initPane(chatDim, this.chatArea, chatTitle, container);
@@ -92,5 +100,10 @@ public class ChatUI extends GenericUI {
         this.chatInput.setText("");
         this.chatInput.grabFocus();
         this.chatArea.append(s);
+        this.chatManager.setMessage(s);
+    }
+
+    public void addMessage(String m){
+        this.chatArea.append(m);
     }
 }

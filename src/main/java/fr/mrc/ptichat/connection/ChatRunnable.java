@@ -1,5 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
+import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+
 import java.io.*;
 import java.net.*;
 
@@ -14,8 +16,10 @@ public class ChatRunnable implements Runnable {
     private Socket socket = null;
     private Thread requestThread, responseThread;
     private Flag flag = new Flag();
+    private ChatManager chatManager;
 
-    public ChatRunnable(Socket socket){
+    public ChatRunnable(Socket socket, ChatManager chatManager){
+        this.chatManager = chatManager;
         this.socket = socket;
     }
 
@@ -23,9 +27,9 @@ public class ChatRunnable implements Runnable {
         try {
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new PrintWriter(this.socket.getOutputStream());
-            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag));
+            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag, this.chatManager));
             this.requestThread.start();
-            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag));
+            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag, this.chatManager));
             this.responseThread.start();
             while(!this.flag.getFlag()) {
                 //Wait
