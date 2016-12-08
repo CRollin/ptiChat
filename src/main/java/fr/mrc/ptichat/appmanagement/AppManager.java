@@ -26,6 +26,10 @@ public class AppManager {
         this.chatManager.open();
     }
 
+    public void leaveChat() {
+        this.connectionManager.open();
+    }
+
     public void initConnection(String peerIp, int peerPort, int userPort, String userName) {
         try {
             Client client = new Client();

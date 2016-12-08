@@ -1,14 +1,14 @@
 package main.java.fr.mrc.ptichat.appmanagement;
 
+import main.java.fr.mrc.ptichat.processing.MessageHandler;
 import main.java.fr.mrc.ptichat.ui.ChatUI;
-
-import java.io.IOException;
 
 public class ChatManager {
 
     private AppManager am;
     private String messageToSend;
     private ChatUI chatUI;
+    public MessageHandler mh = new MessageHandler();
 
     public ChatManager(AppManager am) {
         this.am = am;
@@ -22,8 +22,17 @@ public class ChatManager {
         this.chatUI.open();
     }
 
+    public void leaveChat() {
+        this.chatUI.dispose();
+        this.am.leaveChat();
+    }
+
     public void receivedMessage(String m) {
-        this.chatUI.addMessage(m);
+        if(mh.isTerminationMessage(m)){
+            this.chatUI.handlePeerDeconnection();
+        } else {
+            this.chatUI.addMessage(m);
+        }
     }
 
     public String getMessage(){
