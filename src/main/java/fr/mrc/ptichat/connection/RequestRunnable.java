@@ -1,6 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 import main.java.fr.mrc.ptichat.processing.MessageHandler;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 
 import java.io.*;
@@ -19,6 +20,7 @@ public class RequestRunnable implements Runnable {
     private ChatManager chatManager;
     private MessageHandler mh = new MessageHandler();
     private Flag stopFlag;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
     public RequestRunnable(BufferedReader in, InetAddress address, int port, Flag stopFlag, ChatManager chatManager){
         this.in = in;
@@ -29,16 +31,15 @@ public class RequestRunnable implements Runnable {
     }
 
     public void run(){
-        // TODO: when linking this code to the UI, remove the "System.out.println()" function
         String message;
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         while(!this.stopFlag.getFlag()){
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             try {
                 if (this.in.ready()) {
                     message = this.in.readLine();
                     if (mh.isTerminationMessage(message)) {
-                        message = "User left the chat, disconnecting...";
+                        message = languagesController.getWord("USER_DISCONNECTED");
                         this.stop();
                     } else if (mh.isFileTransmission(message)){
                         try {
@@ -48,22 +49,19 @@ public class RequestRunnable implements Runnable {
                             message = e.getMessage();
                         }
                     }
-                    String intro = "\n>>>>>>" + this.address + ":" + this.port + " à " + sdf.format(cal.getTime()) + "\n";
+                    String intro = "\n>>>>>> " + languagesController.getWord("RECEIVED_AT") + " " + sdf.format(cal.getTime()) + "\n";
                     String received = intro + message + "\n";
                     this.chatManager.receivedMessage(received);
                 }
             } catch (IOException e){
-                // System.out.println("An error occurred");
                 e.printStackTrace();
             }
         }
         try {
-            // System.out.println("Closing reader");
             this.in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Disconnected");
     }
 
     public void stop() { this.stopFlag.setFlag(true); }

@@ -19,7 +19,6 @@ public class Client {
      */
     public void initiateClientSocket(String peerIp, int peerPort, ChatManager chatManager) throws NoServerException {
         try {
-            // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
             this.socket = new Socket(peerIp, peerPort);
             this.chatThread = new Thread(new ChatRunnable(this.socket, chatManager));
@@ -30,24 +29,4 @@ public class Client {
             throw new NoServerException();
         }
     }
-
-//    /**
-//     * Get the host address to connect to
-//     * @return host
-//     */
-//    public static String getHost(){
-//        Input input = new Input();
-//        System.out.println("Host IP address (ex: 127.0.0.1) : ");
-//        return input.getInput();
-//    }
-//
-//    /**
-//     * Get the port to connect to
-//     * @return port
-//     */
-//    public static int getPort(){
-//        Input input = new Input();
-//        System.out.println("Port (ex: 9118): ");
-//        return input.getInt();
-//    }
 }

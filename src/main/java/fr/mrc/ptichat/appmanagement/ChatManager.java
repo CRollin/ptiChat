@@ -33,8 +33,6 @@ public class ChatManager {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    // e.printStackTrace();
-                    // System.out.println("Input interrupted!");
                     return null;
                 }
             }

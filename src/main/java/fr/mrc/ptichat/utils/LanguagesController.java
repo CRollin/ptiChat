@@ -12,13 +12,25 @@ public class LanguagesController {
     private ResourceBundle translation;
 
 
-    public LanguagesController(String language){
+    private LanguagesController(){
         this.supportedLanguages = new HashMap<String, Locale>();
         this.supportedLanguages.put("French", Locale.FRENCH);
         this.supportedLanguages.put("English", Locale.ENGLISH);
-        this.translation = ResourceBundle.getBundle("language", (Locale)this.supportedLanguages.get(language));
+        this.translation = ResourceBundle.getBundle("language", (Locale)this.supportedLanguages.get("English"));
     }
 
+    private static LanguagesController INSTANCE = null;
+
+    public static LanguagesController getInstance(){
+        if (INSTANCE == null){
+            INSTANCE = new LanguagesController();
+        }
+        return INSTANCE;
+    }
+
+    public void setLanguage(String language){
+        this.translation = ResourceBundle.getBundle("language", (Locale)this.supportedLanguages.get(language));
+    }
 
     public String getWord(String keyword) {
         String value = this.translation.getString(keyword);

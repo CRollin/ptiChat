@@ -1,6 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 import java.io.*;
 import java.net.*;
@@ -15,6 +16,7 @@ public class AcceptConnectionsRunnable implements Runnable {
     private Socket socket = null;
     private Thread chatThread;
     private ChatManager chatManager;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
     public AcceptConnectionsRunnable(ServerSocket ss, ChatManager chatManager){ //,
         this.chatManager = chatManager;
@@ -25,13 +27,12 @@ public class AcceptConnectionsRunnable implements Runnable {
         try {
             while(!this.resume){
                 this.socket = this.serverSocket.accept();
-                System.out.println("Someone wants to connect to you.");
                 // Create Chat Thread
                 this.chatThread = new Thread(new ChatRunnable(this.socket, this.chatManager)); //, this.chatManager
                 this.chatThread.start();
             }
         } catch (IOException e){
-            System.err.println("Server Error");
+            System.err.println(languagesController.getWord("SERVER_EXCEPTION"));
         }
     }
 

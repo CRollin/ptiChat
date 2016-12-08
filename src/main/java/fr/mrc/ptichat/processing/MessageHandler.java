@@ -1,11 +1,13 @@
 package main.java.fr.mrc.ptichat.processing;
 
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 import main.java.fr.mrc.ptichat.utils.MessageSignatureController;
 
 import java.io.*;
 
 public class MessageHandler {
     private MessageSignatureController msc;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
     public MessageHandler() { this.msc = new MessageSignatureController() ;}
 
@@ -29,10 +31,10 @@ public class MessageHandler {
         String result;
         try {
             stringToFile(fileContent, filename);
-            result = "New file received at " + filename;
+            result = languagesController.getWord("NEW_FILE_RECEIVED") + filename;
             return result;
         } catch(IOException e){
-            throw new IOException("/!\\ The file" +  sentFilename + "could not be saved on your computer.", e);
+            throw new IOException("/!\\ " + languagesController.getWord("FILE") + " " + sentFilename + " " + languagesController.getWord("NOT_SAVED"), e);
         }
     }
 
@@ -55,7 +57,7 @@ public class MessageHandler {
     public String[] getContentFromMessage(String message) throws IOException {
         // Split whenever at least one whitespace is encountered
         String[] splitArray = message.split("\\s+");
-        if (splitArray.length < 2) throw new IOException("No file was specified! Your message should look like:\n\t/file my_file_name");
+        if (splitArray.length < 2) throw new IOException(languagesController.getWord("NO_FILE_EXCEPTION"));
         return splitArray;
     }
 
@@ -80,9 +82,9 @@ public class MessageHandler {
 
             return fileDataString;
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("/!\\ No such file");
+            throw new FileNotFoundException("/!\\ " + languagesController.getWord("NO_SUCH_FILE"));
         } catch (IOException ioe) {
-            throw new IOException("/!\\ Unable to send the file. Try again later!", ioe);
+            throw new IOException("/!\\ " + languagesController.getWord("UNABLE_TO_SEND_FILE"), ioe);
         } finally {
             // Close ContentInFile
             if (contentInFile != null) contentInFile.close();

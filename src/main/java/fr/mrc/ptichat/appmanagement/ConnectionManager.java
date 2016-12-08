@@ -4,6 +4,7 @@ import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.exceptions.NoServerException;
 import main.java.fr.mrc.ptichat.ui.ConnectionUI;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 import java.util.Hashtable;
 
@@ -12,6 +13,7 @@ import static java.lang.Integer.parseInt;
 public class ConnectionManager {
     private AppManager am;
     private ConnectionUI cui;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
     public ConnectionManager(AppManager am) {
         this.am = am;
@@ -37,7 +39,7 @@ public class ConnectionManager {
             String userName = this.getUserName(connectionData);
             this.am.initConnection(peerIp, peerPort, userPort, userName);
         } catch (Exception e) {
-            this.handleConnectionError("L'un des champs est mal rempli");
+            this.handleConnectionError(languagesController.getWord("FIELD_ERROR"));
         }
 
 
