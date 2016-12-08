@@ -1,5 +1,6 @@
 package main.java.fr.mrc.ptichat.test;
 
+import main.java.fr.mrc.ptichat.connection.Flag;
 import main.java.fr.mrc.ptichat.connection.RequestRunnable;
 
 import org.junit.After;
@@ -26,7 +27,7 @@ public class RequestRunnableTest {
     public void setUp() throws Exception {
         System.setOut(out);
         when(in.readLine()).thenReturn("line1", "");
-        request = new RequestRunnable(in, InetAddress.getByName("127.0.0.1"), 8080);
+        request = new RequestRunnable(in, InetAddress.getByName("127.0.0.1"), 8080, new Flag());
         t = new Thread(request);
     }
 
@@ -41,7 +42,7 @@ public class RequestRunnableTest {
         t.start();
         try {
             verify(out).println(startsWith("Received (me: /127.0.0.1:8080) : line1"));
-            t.sleep(1000);
+            Thread.sleep(1000);
         } catch (InterruptedException e){
             e.printStackTrace();
         }

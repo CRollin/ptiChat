@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.io.File;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ResponseHandlerTest {
@@ -16,13 +16,7 @@ public class ResponseHandlerTest {
 
     @Test
     public void getTerminationBytes() throws Exception {
-        assertArrayEquals("Q".getBytes() , rh.getTerminationBytes());
-    }
-
-    @Test
-    public void formatMessage() throws Exception {
-        assertArrayEquals("M".getBytes() , rh.formatMessage(null));
-        assertArrayEquals("Mtoto".getBytes() , rh.formatMessage("toto"));
+        assertEquals("/exit" , rh.getTerminationMessage());
     }
 
     @Test
