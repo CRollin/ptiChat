@@ -31,10 +31,11 @@ public class ConnectionManager {
 
     public void initConnection(Hashtable<String, String> connectionData) {
         try {
-            String hostIp = this.getHostIp(connectionData);
-            int hostPort = this.getHostPort(connectionData);
-            int serverPort = this.getServerPort(connectionData);
-            this.am.initConnection(hostIp, hostPort, serverPort);
+            String peerIp = this.getPeerIp(connectionData);
+            int peerPort = this.getPeerPort(connectionData);
+            int userPort = this.getUserPort(connectionData);
+            String userName = this.getUserName(connectionData);
+            this.am.initConnection(peerIp, peerPort, userPort, userName);
         } catch (Exception e) {
             this.handleConnectionError("L'un des champs est mal rempli");
         }
@@ -46,15 +47,19 @@ public class ConnectionManager {
         this.cui.addErrorMessage(m);
     }
 
-    private String getHostIp(Hashtable<String, String> connectionData) {
+    private String getPeerIp(Hashtable<String, String> connectionData) {
         return connectionData.get("PEER_IP");
     }
 
-    private int getHostPort(Hashtable<String, String> connectionData) {
+    private int getPeerPort(Hashtable<String, String> connectionData) {
         return parseInt(connectionData.get("PEER_PORT"));
     }
 
-    private int getServerPort(Hashtable<String, String> connectionData) {
+    private String getUserName(Hashtable<String, String> connectionData){
+        return connectionData.get("USER_NAME");
+    }
+
+    private int getUserPort(Hashtable<String, String> connectionData) {
         return parseInt(connectionData.get("USER_PORT"));
     }
 

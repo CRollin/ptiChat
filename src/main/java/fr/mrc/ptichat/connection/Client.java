@@ -17,11 +17,11 @@ public class Client {
     /**
      * Initiate a socket between the client and the ServerSocket matching the host and port address.
      */
-    public void initiateClientSocket(String hostIp, int port, ChatManager chatManager) throws NoServerException {
+    public void initiateClientSocket(String peerIp, int peerPort, ChatManager chatManager) throws NoServerException {
         try {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
-            this.socket = new Socket(hostIp, port);
+            this.socket = new Socket(peerIp, peerPort);
             this.chatThread = new Thread(new ChatRunnable(this.socket, chatManager));
             this.chatThread.start();
         } catch (UnknownHostException e){

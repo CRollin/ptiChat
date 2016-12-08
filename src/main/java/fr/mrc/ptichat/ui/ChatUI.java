@@ -1,6 +1,5 @@
 package main.java.fr.mrc.ptichat.ui;
 
-
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 
 import javax.swing.*;
@@ -8,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ChatUI extends GenericUI {
 
@@ -17,17 +18,13 @@ public class ChatUI extends GenericUI {
     private boolean isPeerConnected;
     private ChatManager chatManager;
 
-    public ChatUI(ChatManager chatManager) {
-       super("chatWindow");
+    public ChatUI(ChatManager chatManager, String peerIp) {
+        super("chatWindow");
         this.chatManager = chatManager;
-    }
-
-    public void open(String peerIp){
         this.peerIp = peerIp;
         this.isPeerConnected = this.peerIp != null;
-        super.open();
+        this.updateChatTitle();
     }
-
 
     @Override
     protected void createUI() {
@@ -51,9 +48,7 @@ public class ChatUI extends GenericUI {
         flowLayout.setAlignment(FlowLayout.CENTER);
         Dimension chatDim = this.createDimension("chatWindow.chatArea.width", "chatWindow.centerBar.height");
         this.chatArea = new JTextArea();
-
-        String chatTitle = isPeerConnected ? this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp
-                :  this.languagesController.getWord("CHAT_WANTING_TITLE");
+        String chatTitle = "";
         Dimension fileDim = this.createDimension("chatWindow.fileArea.width", "chatWindow.centerBar.height");
         JTextArea fileArea = new JTextArea();
         this.initPane(chatDim, this.chatArea, chatTitle, container);
@@ -81,21 +76,20 @@ public class ChatUI extends GenericUI {
         this.chatInput = new JTextField();
         Dimension chatInputDim = this.createDimension("chatWindow.inputChat.width", "chatWindow.bottomBar.height");
         this.chatInput.setPreferredSize(chatInputDim);
-        //Create buttons
+        //Create button
         JButton sendMessageButton = new JButton(this.languagesController.getWord("SEND"));
-        JButton sendFileButton = new JButton(this.languagesController.getWord("SEND_FILE"));
         Dimension buttonDim =   this.createDimension("chatWindow.button.width", "chatWindow.bottomBar.height");
         sendMessageButton.setPreferredSize(buttonDim);
-        sendFileButton.setPreferredSize(buttonDim);
         //Build component
         container.add(chatInput);
         container.add(sendMessageButton);
-        container.add(sendFileButton);
         sendMessageButton.addActionListener(e -> this.sendMessage(e));
     }
 
     private void sendMessage(ActionEvent e){
-        String intro = "\n>>>>>>" + " Vous à " +"HH:hh:ss" + "\n";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String intro = "\n>>>>>>" + " Vous à " + sdf.format(cal.getTime()) + "\n";
         String message = this.chatInput.getText();
         String s = intro + message + "\n";
         this.chatInput.setText("");
@@ -105,6 +99,23 @@ public class ChatUI extends GenericUI {
     }
 
     public void addMessage(String m){
+        if(this.isPeerConnected == false) {
+            this.peerIp = this.extractPeerIp(m);
+            this.isPeerConnected = true;
+            this.updateChatTitle();
+        }
         this.chatArea.append(m);
+    }
+
+    private String extractPeerIp(String m){
+        System.out.println(m);
+        return m.substring(m.indexOf("/") + 1, m.indexOf(":"));
+    }
+
+    private void updateChatTitle(){
+        String t = this.isPeerConnected ? this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp
+                :  this.languagesController.getWord("CHAT_WANTING_TITLE");
+        this.chatArea.append(t + "\n");
+
     }
 }

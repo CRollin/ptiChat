@@ -14,12 +14,12 @@ public class ChatManager {
         this.am = am;
     }
 
-    public void create(){
-        this.chatUI = new ChatUI(this);
+    public void create(String peerIp){
+        this.chatUI = new ChatUI(this, peerIp);
     }
 
-    public void open(String peerIp){
-        this.chatUI.open(peerIp);
+    public void open(){
+        this.chatUI.open();
     }
 
     public void receivedMessage(String m) {

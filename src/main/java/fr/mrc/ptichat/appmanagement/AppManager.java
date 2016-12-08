@@ -22,19 +22,19 @@ public class AppManager {
 
     public void initChat(String peerIp) {
         this.connectionManager.dispose();
-        this.chatManager.create();
-        this.chatManager.open(peerIp);
+        this.chatManager.create(peerIp);
+        this.chatManager.open();
     }
 
-    public void initConnection(String hostIp, int hostPort, int serverPort) {
+    public void initConnection(String peerIp, int peerPort, int userPort, String userName) {
         try {
             Client client = new Client();
-            client.initiateClientSocket(hostIp, hostPort, this.chatManager);
+            client.initiateClientSocket(peerIp, peerPort, this.chatManager);
             System.out.println("\n###### Client's Initialized");
-            this.initChat(hostIp);
+            this.initChat(peerIp);
         } catch (NoServerException e) {
             ClientServer clientServer = new ClientServer();
-            clientServer.initiateClientServerSocket(serverPort, this.chatManager);
+            clientServer.initiateClientServerSocket(userPort, this.chatManager);
             System.out.println("\n###### Server initialized ######");
             this.initChat(null);
         } catch (Exception e) {

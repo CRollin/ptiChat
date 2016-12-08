@@ -14,7 +14,7 @@ public class AcceptConnectionsRunnable implements Runnable {
     private ServerSocket serverSocket = null;
     private Socket socket = null;
     private Thread chatThread;
-    private ChatManager chatManager; //
+    private ChatManager chatManager;
 
     public AcceptConnectionsRunnable(ServerSocket ss, ChatManager chatManager){ //,
         this.chatManager = chatManager;
