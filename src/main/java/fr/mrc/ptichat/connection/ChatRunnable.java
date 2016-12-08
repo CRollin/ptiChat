@@ -15,11 +15,11 @@ public class ChatRunnable implements Runnable {
     private PrintWriter out = null;
     private Socket socket = null;
     private Thread requestThread, responseThread;
-    private Flag flag = new Flag();
-    private ChatManager chatManager;
+    private Flag stopFlag = new Flag();
+    //private ChatManager chatManager;
 
-    public ChatRunnable(Socket socket, ChatManager chatManager){
-        this.chatManager = chatManager;
+    public ChatRunnable(Socket socket){ //, ChatManager chatManager
+        //this.chatManager = chatManager;
         this.socket = socket;
     }
 
@@ -27,11 +27,12 @@ public class ChatRunnable implements Runnable {
         try {
             this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.out = new PrintWriter(this.socket.getOutputStream());
-            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag, this.chatManager));
+            // Instantiate both request and response threads with the same Flag instance
+            this.requestThread = new Thread(new RequestRunnable(this.in, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.stopFlag)); //, this.chatManager
             this.requestThread.start();
-            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.flag, this.chatManager));
+            this.responseThread = new Thread(new ResponseRunnable(this.out, this.socket.getLocalAddress(), this.socket.getLocalPort(), this.stopFlag)); //, this.chatManager
             this.responseThread.start();
-            while(!this.flag.getFlag()) {
+            while(!this.stopFlag.getFlag()) {
                 //Wait
             }
             this.responseThread.interrupt();

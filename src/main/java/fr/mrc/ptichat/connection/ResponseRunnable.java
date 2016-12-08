@@ -1,7 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
-import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
-import main.java.fr.mrc.ptichat.processing.RequestHandler;
+//import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+import main.java.fr.mrc.ptichat.processing.MessageHandler;
 
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -14,33 +14,38 @@ public class ResponseRunnable implements Runnable {
     private InetAddress address;
     private int port;
     private PrintWriter out;
-    //private Input input = new Input();
-    private RequestHandler rh = new RequestHandler();
-    private Flag flag;
-    private ChatManager chatManager;
+    private Input input = new Input();
+    private MessageHandler mh = new MessageHandler();
+    private Flag stopFlag;
+        // private ChatManager chatManager;
 
-    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag flag, ChatManager chatManager){
+    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag){ //ChatManager chatManager
         this.address = address;
         this.out = out;
         this.port = port;
-        this.flag = flag;
-        this.chatManager = chatManager;
+        this.stopFlag = stopFlag;
+        //this.chatManager = chatManager;
     }
 
     public void run(){
         // TODO: when linking this code to the UI, remove the "System.out.println()" function
         String message;
-        while(!this.flag.getFlag()) {
-            //System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
-            message = this.chatManager.getMessage();//this.input.getInput();
+        while(!this.stopFlag.getFlag()) {
+            System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
+            message = this.input.getInput(); //message = this.chatManager.getMessage()
+            if (mh.isTerminationMessage(message)) {
+                this.stop();
+            } else if(mh.isFileTransmission(message)){
+                String file = mh.fileToMessage(message);
+                message = message + " " + file;
+            }
             this.out.println(message);
             this.out.flush();
-            if (rh.isTerminationMessage(message)) this.stop();
         }
         this.out.close();
     }
 
     private void stop(){
-        this.flag.setFlag(true);
+        this.stopFlag.setFlag(true);
     }
 }

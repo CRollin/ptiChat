@@ -20,5 +20,6 @@ public class MessageSignatureController extends propertiesController {
     public String getTerminationSignature() {
         return ps.getProperty("QUIT");
     }
+    public String getFileTerminationSignature() { return ps.getProperty("FILE"); }
 
 }

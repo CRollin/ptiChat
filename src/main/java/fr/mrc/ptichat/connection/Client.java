@@ -22,7 +22,7 @@ public class Client {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
             this.socket = new Socket(hostIp, port);
-            this.chatThread = new Thread(new ChatRunnable(this.socket, chatManager));
+            this.chatThread = new Thread(new ChatRunnable(this.socket)); //, chatManager
             this.chatThread.start();
         } catch (UnknownHostException e){
             throw new NoServerException();

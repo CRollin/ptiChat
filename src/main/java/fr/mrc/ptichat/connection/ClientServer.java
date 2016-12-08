@@ -25,7 +25,7 @@ public class ClientServer {
             this.serverSocket = new ServerSocket(port);
             System.out.println("Server listening to the port " + serverSocket.getLocalPort());
             // Handle the connection requests
-            this.acceptConnectionsThread = new Thread(new AcceptConnectionsRunnable(this.serverSocket, chatManager));
+            this.acceptConnectionsThread = new Thread(new AcceptConnectionsRunnable(this.serverSocket)); //, chatManager
             this.acceptConnectionsThread.start();
         } catch (IOException e){
             System.out.println("The port is already used.");
