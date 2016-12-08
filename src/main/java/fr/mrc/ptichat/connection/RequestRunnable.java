@@ -38,20 +38,20 @@ public class RequestRunnable implements Runnable {
             try {
                 if (this.in.ready()) {
                     message = this.in.readLine();
+                    String intro = "\n>>>>>> " + languagesController.getWord("RECEIVED_AT") + " " + sdf.format(cal.getTime()) + "\n";
                     if (mh.isTerminationMessage(message)) {
-                        message = languagesController.getWord("USER_DISCONNECTED");
                         this.stop();
                     } else if (mh.isFileTransmission(message)){
                         try {
                             String[] messageParts = mh.getContentFromMessage(message);
-                            message = mh.messageToFile(messageParts[1], messageParts[2]);
+                            message = intro + mh.messageToFile(messageParts[1], messageParts[2]) + "\n";
                         } catch (IOException e) {
                             message = e.getMessage();
                         }
+                    } else {
+                        message = intro + message + "\n";
                     }
-                    String intro = "\n>>>>>> " + languagesController.getWord("RECEIVED_AT") + " " + sdf.format(cal.getTime()) + "\n";
-                    String received = intro + message + "\n";
-                    this.chatManager.receivedMessage(received);
+                    this.chatManager.receivedMessage(message);
                 }
             } catch (IOException e){
                 e.printStackTrace();
