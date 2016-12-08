@@ -1,5 +1,6 @@
 package main.java.fr.mrc.ptichat.connection;
 
+import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 import main.java.fr.mrc.ptichat.exceptions.NoServerException;
 
 import java.io.IOException;
@@ -16,40 +17,37 @@ public class Client {
     /**
      * Initiate a socket between the client and the ServerSocket matching the host and port address.
      */
-    public void initiateClientSocket() throws NoServerException {
+    public void initiateClientSocket(String peerIp, int peerPort, ChatManager chatManager) throws NoServerException {
         try {
             // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             System.out.println("\n###### Client's socket Initialisation ######");
-            String host = getHost();
-            int port = getPort();
-            this.socket = new Socket(host, port);
-            // Create Chat Thread
-            this.chatThread = new Thread(new ChatRunnable(this.socket));
+            this.socket = new Socket(peerIp, peerPort);
+            this.chatThread = new Thread(new ChatRunnable(this.socket, chatManager));
             this.chatThread.start();
         } catch (UnknownHostException e){
-            System.err.println("connection impossible");
+            throw new NoServerException();
         } catch (IOException e){
             throw new NoServerException();
         }
     }
 
-    /**
-     * Get the host address to connect to
-     * @return host
-     */
-    public static String getHost(){
-        Input input = new Input();
-        System.out.println("Host IP address (ex: 127.0.0.1) : ");
-        return input.getInput();
-    }
-
-    /**
-     * Get the port to connect to
-     * @return port
-     */
-    public static int getPort(){
-        Input input = new Input();
-        System.out.println("Port (ex: 9118): ");
-        return input.getInt();
-    }
+//    /**
+//     * Get the host address to connect to
+//     * @return host
+//     */
+//    public static String getHost(){
+//        Input input = new Input();
+//        System.out.println("Host IP address (ex: 127.0.0.1) : ");
+//        return input.getInput();
+//    }
+//
+//    /**
+//     * Get the port to connect to
+//     * @return port
+//     */
+//    public static int getPort(){
+//        Input input = new Input();
+//        System.out.println("Port (ex: 9118): ");
+//        return input.getInt();
+//    }
 }

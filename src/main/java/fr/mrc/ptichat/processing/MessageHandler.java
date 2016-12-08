@@ -19,42 +19,21 @@ public class MessageHandler {
     }
 
     /***
-     * Transforms the input into a String containing "/file /path/to/file fileInBytesString"
-     * @param input
-     * @return <code>String</code>
-     */
-    public String fileToMessage(String input){
-        String filename = getFilePath(input);
-        return fileToString(filename);
-    }
-
-    /***
      * Transforms the received message into a file
-     * @param message
+     * @param sentFilename
+     * @param fileContent
      * @return <code>String</code> the path of the newly created file
      */
-    public String messageToFile(String message){
-        String[] messageContent = getContentFromMessage(message);
-        String filename = buildUserFilePath(messageContent[1]);
-        String result = "";
+    public String messageToFile(String sentFilename, String fileContent) throws IOException {
+        String filename = buildUserFilePath(sentFilename);
+        String result;
         try {
-            stringToFile(messageContent[2], filename);
+            stringToFile(fileContent, filename);
             result = "New file received at " + filename;
+            return result;
         } catch(IOException e){
-            result = "The File could not be saved in your computer, try again.";
-        } catch(ArrayIndexOutOfBoundsException e){
-            result = "Someone tried to send you a file, but it didn't work. Try again.";
+            throw new IOException("/!\\ The file" +  sentFilename + "could not be saved on your computer.", e);
         }
-        return result;
-    }
-
-    /***
-     * Remove /file from the message in order to get the file's path
-     * @param input
-     * @return the path of the file
-     */
-    public String getFilePath(String input) {
-        return input.substring(this.msc.getFileTerminationSignature().length() + 1);
     }
 
     /***
@@ -73,38 +52,41 @@ public class MessageHandler {
      * @param message
      * @return <code>String[]</code>
      */
-    public String[] getContentFromMessage(String message){
+    public String[] getContentFromMessage(String message) throws IOException {
         // Split whenever at least one whitespace is encountered
         String[] splitArray = message.split("\\s+");
+        if (splitArray.length < 2) throw new IOException("No file was specified! Your message should look like:\n\t/file my_file_name");
         return splitArray;
     }
 
     /**
-     * Encodes a file into an array of bytes.
+     * Encodes a file into a Base64 encoded String.
      * @param filename the location of the file
-     * @return the <code>byte[]</code> representation of the file
+     * @return the <code>String</code> representation of the file
      */
-    public String fileToString(String filename) {
-        String fileDataString = new String();
+    public String fileToString(String filename) throws IOException {
+        String fileDataString;
+        FileInputStream contentInFile = null;
         try {
             File file = new File(filename);
+            contentInFile = new FileInputStream(file);
 
             // Reading a file from file system
-            FileInputStream contentInFile = new FileInputStream(file);
             byte fileData[] = new byte[(int) file.length()];
             contentInFile.read(fileData);
 
             // Converting file byte array into Base64 String
             fileDataString = FileManipulation.encodeImage(fileData);
 
-            // Close ContentInFile
-            contentInFile.close();
+            return fileDataString;
         } catch (FileNotFoundException e) {
-            System.out.println("Image not found" + e);
+            throw new FileNotFoundException("/!\\ No such file");
         } catch (IOException ioe) {
-            System.out.println("Exception while reading the Image " + ioe);
+            throw new IOException("/!\\ Unable to send the file. Try again later!", ioe);
+        } finally {
+            // Close ContentInFile
+            if (contentInFile != null) contentInFile.close();
         }
-        return fileDataString;
     }
 
     /***

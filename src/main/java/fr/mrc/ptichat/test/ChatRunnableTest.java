@@ -17,19 +17,19 @@ public class ChatRunnableTest {
 
     private ChatRunnable chatThread;
 
-    @Before
-    public void setUp() throws Exception {
-        Socket socket = mock(Socket.class);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("hello".getBytes());
-        when(socket.getInputStream()).thenReturn(byteArrayInputStream);
-        when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
-        chatThread = new ChatRunnable(socket);
-    }
-    @Test
-    public void testInputInThread(){
-        chatThread.run();
-        assertTrue("Buffer Reader not ready", chatThread.getRequestThread().isAlive());
-        assertTrue("Print Writer not ready", chatThread.getResponseThread().isAlive());
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        Socket socket = mock(Socket.class);
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream("hello".getBytes());
+//        when(socket.getInputStream()).thenReturn(byteArrayInputStream);
+//        when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+//        chatThread = new ChatRunnable(socket);
+//    }
+//    @Test
+//    public void testInputInThread(){
+//        chatThread.run();
+//        assertTrue("Buffer Reader not ready", chatThread.getRequestThread().isAlive());
+//        assertTrue("Print Writer not ready", chatThread.getResponseThread().isAlive());
+//    }
 }

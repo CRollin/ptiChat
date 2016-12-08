@@ -23,6 +23,7 @@ public abstract class propertiesController {
     }
 
     public int getIntValue(String key) {
+
         return Integer.parseInt(ps.getProperty(key));
     }
 
