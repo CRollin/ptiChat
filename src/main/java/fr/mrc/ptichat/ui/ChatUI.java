@@ -18,10 +18,12 @@ public class ChatUI extends GenericUI {
     private String peerIp;
     private boolean isPeerConnected;
     private ChatManager chatManager;
+    private FileChooserUI chooserUI;
 
     public ChatUI(ChatManager chatManager, String peerIp) {
         super("chatWindow");
         this.chatManager = chatManager;
+        this.chooserUI.chatManager = chatManager;
         this.peerIp = peerIp;
         this.isPeerConnected = this.peerIp != null;
         this.updateChatTitle();
@@ -79,12 +81,16 @@ public class ChatUI extends GenericUI {
         this.chatInput.setPreferredSize(chatInputDim);
         //Create button
         JButton sendMessageButton = new JButton(this.languagesController.getWord("SEND"));
+        JButton sendFileButton = new JButton(this.languagesController.getWord("SEND_FILE"));
         Dimension buttonDim =   this.createDimension("chatWindow.button.width", "chatWindow.bottomBar.height");
         sendMessageButton.setPreferredSize(buttonDim);
+        sendFileButton.setPreferredSize(buttonDim);
         //Build component
         container.add(chatInput);
         container.add(sendMessageButton);
+        container.add(sendFileButton);
         sendMessageButton.addActionListener(e -> this.sendMessage(e));
+        this.chooserUI = new FileChooserUI(sendFileButton);
     }
 
     private void sendMessage(ActionEvent e){
