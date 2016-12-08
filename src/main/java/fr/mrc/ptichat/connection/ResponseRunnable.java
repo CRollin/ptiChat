@@ -28,10 +28,8 @@ public class ResponseRunnable implements Runnable {
     }
 
     public void run(){
-        // TODO: when linking this code to the UI, remove the "System.out.println()" function
         String message;
         while(!this.stopFlag.getFlag()) {
-            System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
             message = this.chatManager.getMessage();
             try {
                 if (mh.isTerminationMessage(message)) {

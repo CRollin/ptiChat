@@ -97,7 +97,7 @@ public class ChatUI extends GenericUI {
     private void sendMessage(){
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String intro = "\n>>>>>>" + " Vous à " + sdf.format(cal.getTime()) + "\n";
+        String intro = "\n>>>>>> " + this.languagesController.getWord("SEND_INTRO") + " " + sdf.format(cal.getTime()) + "\n";
         String message = this.chatInput.getText();
         this.chatManager.setMessage(message);
         if (this.chatManager.mh.isTerminationMessage(message)) {
@@ -113,24 +113,19 @@ public class ChatUI extends GenericUI {
 
     public void addMessage(String m){
         if(this.isPeerConnected == false) {
-            this.peerIp = this.extractPeerIp(m);
             this.isPeerConnected = true;
             this.updateChatTitle();
         }
         this.chatArea.append(m);
     }
 
-    public void handlePeerDeconnection(){
+    public void handlePeerDisconnection(){
         this.isPeerConnected = false;
         this.chatArea.append(this.formatChatInfo(this.languagesController.getWord("PEER_DECO")));
     }
 
-    private String extractPeerIp(String m){
-        return m.substring(m.indexOf("/") + 1, m.indexOf(":"));
-    }
-
     private void updateChatTitle(){
-        String t = this.isPeerConnected ? this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp
+        String t = this.isPeerConnected ? this.languagesController.getWord("CHAT_TITLE")
                 :  this.languagesController.getWord("CHAT_WANTING_TITLE");
         this.chatArea.append(this.formatChatInfo(t));
     }
