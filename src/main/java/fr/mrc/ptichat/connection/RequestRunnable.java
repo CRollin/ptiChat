@@ -14,19 +14,19 @@ public class RequestRunnable implements Runnable {
     private InetAddress address;
     private int port;
     private RequestHandler rh = new RequestHandler();
-    private Flag flag;
+    private Flag stopFlag;
 
-    public RequestRunnable(BufferedReader in, InetAddress address, int port, Flag flag){
+    public RequestRunnable(BufferedReader in, InetAddress address, int port, Flag stopFlag){
         this.in = in;
         this.address = address;
         this.port = port;
-        this.flag = flag;
+        this.stopFlag = stopFlag;
     }
 
     public void run(){
         // TODO: when linking this code to the UI, remove the "System.out.println()" function
         String message;
-        while(!this.flag.getFlag()){
+        while(!this.stopFlag.getFlag()){
             try {
                 if (this.in.ready()) {
                     message = this.in.readLine();
@@ -50,5 +50,5 @@ public class RequestRunnable implements Runnable {
         System.out.println("Disconnected");
     }
 
-    public void stop() { this.flag.setFlag(true); }
+    public void stop() { this.stopFlag.setFlag(true); }
 }

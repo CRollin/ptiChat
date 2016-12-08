@@ -15,19 +15,19 @@ public class ResponseRunnable implements Runnable {
     private PrintWriter out;
     private Input input = new Input();
     private RequestHandler rh = new RequestHandler();
-    private Flag flag;
+    private Flag stopFlag;
 
-    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag flag){
+    public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag){
         this.address = address;
         this.out = out;
         this.port = port;
-        this.flag = flag;
+        this.stopFlag = stopFlag;
     }
 
     public void run(){
         // TODO: when linking this code to the UI, remove the "System.out.println()" function
         String message;
-        while(!this.flag.getFlag()) {
+        while(!this.stopFlag.getFlag()) {
             System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
             message = this.input.getInput();
             this.out.println(message);
@@ -38,6 +38,6 @@ public class ResponseRunnable implements Runnable {
     }
 
     private void stop(){
-        this.flag.setFlag(true);
+        this.stopFlag.setFlag(true);
     }
 }
