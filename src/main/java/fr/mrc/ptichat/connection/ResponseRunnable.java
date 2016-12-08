@@ -30,11 +30,11 @@ public class ResponseRunnable implements Runnable {
         while(!this.stopFlag.getFlag()) {
             System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
             message = this.input.getInput();
-            if(mh.isFileTransmission(message)){
+            if (mh.isTerminationMessage(message)) {
+                this.stop();
+            } else if(mh.isFileTransmission(message)){
                 String file = mh.fileToMessage(message);
                 message = message + " " + file;
-            } else if (mh.isTerminationMessage(message)) {
-                this.stop();
             }
             this.out.println(message);
             this.out.flush();

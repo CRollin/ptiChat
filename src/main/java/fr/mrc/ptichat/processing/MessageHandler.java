@@ -15,7 +15,7 @@ public class MessageHandler {
      * @return <code>true</code> if the message starts with /file, <code>false</code> otherwise
      */
     public boolean isFileTransmission(String message) {
-        return message.startsWith(this.msc.getFileTerminationSignature());
+        return message != null && message.startsWith(this.msc.getFileTerminationSignature());
     }
 
     /***
@@ -130,6 +130,6 @@ public class MessageHandler {
      * @return <code>true</code> if the String is a termination message, false otherwise
      */
     public boolean isTerminationMessage(String input) {
-        return msc.getTerminationSignature().equals(input);
+        return input != null && msc.getTerminationSignature().equals(input);
     }
 }
