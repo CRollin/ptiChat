@@ -26,6 +26,8 @@ public class ChatManager {
         this.chatUI.addMessage(m);
     }
 
+    public void receivedFile(String file) { this.chatUI.addFile(file);}
+
     public String getMessage(){
         String m = "";
         try {

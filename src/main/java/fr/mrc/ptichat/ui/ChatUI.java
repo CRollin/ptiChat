@@ -14,6 +14,7 @@ public class ChatUI extends GenericUI {
 
     private JTextField chatInput;
     private JTextArea chatArea;
+    private JTextArea fileArea;
     private String peerIp;
     private boolean isPeerConnected;
     private ChatManager chatManager;
@@ -50,9 +51,9 @@ public class ChatUI extends GenericUI {
         this.chatArea = new JTextArea();
         String chatTitle = "";
         Dimension fileDim = this.createDimension("chatWindow.fileArea.width", "chatWindow.centerBar.height");
-        JTextArea fileArea = new JTextArea();
+        this.fileArea = new JTextArea();
         this.initPane(chatDim, this.chatArea, chatTitle, container);
-        this.initPane(fileDim, fileArea, this.languagesController.getWord("FILE_TITLE"), container);
+        this.initPane(fileDim, this.fileArea, this.languagesController.getWord("FILE_TITLE"), container);
     }
 
     private void initPane(Dimension d, JTextArea ta, String s, Container c){
@@ -117,5 +118,13 @@ public class ChatUI extends GenericUI {
                 :  this.languagesController.getWord("CHAT_WANTING_TITLE");
         this.chatArea.append(t + "\n");
 
+    }
+
+    /**
+     * Appends a new file to the list of received files.
+     * @param file the new received file
+     */
+    public void addFile(String file) {
+        this.fileArea.append(file + "\n");
     }
 }
