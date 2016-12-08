@@ -18,6 +18,8 @@ public class Main {
     }
 
     static void connectionProgramme(){
+
+        System.out.println("Working Directory = " + System.getProperty("user.dir"));
         // TODO: Replace this method by linking the classes ClientServer and Client to the UI (JFrame)
         Input input = new Input();
         // Initiate the Client Server

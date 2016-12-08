@@ -1,6 +1,6 @@
 package main.java.fr.mrc.ptichat.connection;
 
-import main.java.fr.mrc.ptichat.processing.RequestHandler;
+import main.java.fr.mrc.ptichat.processing.MessageHandler;
 
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -14,7 +14,7 @@ public class ResponseRunnable implements Runnable {
     private int port;
     private PrintWriter out;
     private Input input = new Input();
-    private RequestHandler rh = new RequestHandler();
+    private MessageHandler mh = new MessageHandler();
     private Flag stopFlag;
 
     public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag){
@@ -30,9 +30,14 @@ public class ResponseRunnable implements Runnable {
         while(!this.stopFlag.getFlag()) {
             System.out.println("Type a message to " + this.address + ":" + this.port +  " : ");
             message = this.input.getInput();
+            if(mh.isFileTransmission(message)){
+                String file = mh.fileToMessage(message);
+                message = message + " " + file;
+            } else if (mh.isTerminationMessage(message)) {
+                this.stop();
+            }
             this.out.println(message);
             this.out.flush();
-            if (rh.isTerminationMessage(message)) this.stop();
         }
         this.out.close();
     }
