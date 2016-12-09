@@ -9,7 +9,7 @@ public class ChatManager {
 
     private AppManager am;
     private String messageToSend;
-    private String savedFilesDirectory = System.getProperty("user.dir") + File.separator + "new_";
+    private String savedFilesDirectory = System.getProperty("user.dir") + File.separator.replace("\\", "\\\\") + "new_";
     private ChatUI chatUI;
     public MessageHandler mh = new MessageHandler();
 
