@@ -3,32 +3,19 @@ package main.java.fr.mrc.ptichat.ui;
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 import main.java.fr.mrc.ptichat.utils.MessageSignatureController;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
-public class FileChooserUI extends JPanel implements ActionListener {
-    private JFileChooser chooser;
+public class FileChooserUI extends AbstractChooserUI {
+    private MessageSignatureController msc = new MessageSignatureController();
     public ChatManager chatManager;
 
     public FileChooserUI(JButton button) {
-        button.addActionListener(this);
+        super(button, true);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        MessageSignatureController msc = new MessageSignatureController();
-        chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        //
-        // disable the "All files" option.
-        //
-        chooser.setAcceptAllFileFilterUsed(false);
-        //
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            this.chatManager.setMessage(msc.getFileTerminationSignature() + " " + chooser.getSelectedFile());
-        }
+    @Override
+    protected void performSideEffectAction(String selection) {
+        this.chatManager.setMessage(this.msc.getFileTerminationSignature() + " " + this.chooser.getSelectedFile());
     }
 
 }

@@ -31,7 +31,7 @@ public class MessageHandler {
         String result;
         try {
             stringToFile(fileContent, filename);
-            result = languagesController.getWord("NEW_FILE_RECEIVED") + filename;
+            result = filename;
             return result;
         } catch(IOException e){
             throw new IOException("/!\\ " + languagesController.getWord("FILE") + " " + sentFilename + " " + languagesController.getWord("NOT_SAVED"), e);
@@ -45,7 +45,7 @@ public class MessageHandler {
      * @return <code>String</code>
      */
     public String buildUserFilePath(String sentFilepath, String userDirPath){
-        String[] dir = sentFilepath.split(File.separator);
+        String[] dir = sentFilepath.split(File.separator.replace("\\", "\\\\"));
         return userDirPath + dir[dir.length - 1];
     }
 
@@ -84,6 +84,7 @@ public class MessageHandler {
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("/!\\ " + languagesController.getWord("NO_SUCH_FILE"));
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             throw new IOException("/!\\ " + languagesController.getWord("UNABLE_TO_SEND_FILE"), ioe);
         } finally {
             // Close ContentInFile

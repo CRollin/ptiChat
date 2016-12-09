@@ -33,6 +33,8 @@ public class AppManager {
     }
 
     public void initConnection(String peerIp, int peerPort, int userPort, String userName) {
+        String dirPath = this.connectionManager.getSavedFilesDirectory();
+        if (dirPath.length() > 0) this.chatManager.setSavedFilesDirectory(dirPath);
         try {
             Client client = new Client();
             client.initiateClientSocket(peerIp, peerPort, this.chatManager);
