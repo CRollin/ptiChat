@@ -9,8 +9,8 @@ public class FileChooserUI extends AbstractChooserUI {
     private MessageSignatureController msc = new MessageSignatureController();
     public ChatManager chatManager;
 
-    public FileChooserUI(JButton button, boolean filesOnly) {
-        super(button, filesOnly);
+    public FileChooserUI(JButton button) {
+        super(button, true);
     }
 
     @Override

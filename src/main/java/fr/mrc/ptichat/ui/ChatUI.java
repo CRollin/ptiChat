@@ -98,7 +98,7 @@ public class ChatUI extends GenericUI {
             }
         });
         //Bind FileChooserUI to sendFileButton
-        this.chooserUI = new FileChooserUI(sendFileButton, true);
+        this.chooserUI = new FileChooserUI(sendFileButton);
     }
 
     private void sendMessage(){
