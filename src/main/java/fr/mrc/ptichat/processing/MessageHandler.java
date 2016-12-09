@@ -26,8 +26,8 @@ public class MessageHandler {
      * @param fileContent
      * @return <code>String</code> the path of the newly created file
      */
-    public String messageToFile(String sentFilename, String fileContent) throws IOException {
-        String filename = buildUserFilePath(sentFilename);
+    public String messageToFile(String sentFilename, String fileContent, String userDirPath) throws IOException {
+        String filename = buildUserFilePath(sentFilename, userDirPath);
         String result;
         try {
             stringToFile(fileContent, filename);
@@ -40,13 +40,13 @@ public class MessageHandler {
 
     /***
      * Build the path where the user should save the file ex "Users/username/Documents/..."
-     * @param filepath
+     * @param sentFilepath
+     * @param userDirPath
      * @return <code>String</code>
      */
-    public String buildUserFilePath(String filepath){
-        String[] dir = filepath.split("/");
-        String filename = System.getProperty("user.dir") + "/new_" + dir[dir.length - 1];
-        return filename;
+    public String buildUserFilePath(String sentFilepath, String userDirPath){
+        String[] dir = sentFilepath.split(File.separator);
+        return userDirPath + dir[dir.length - 1];
     }
 
     /***

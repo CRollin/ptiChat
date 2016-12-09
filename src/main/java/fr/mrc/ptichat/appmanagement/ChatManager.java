@@ -3,10 +3,13 @@ package main.java.fr.mrc.ptichat.appmanagement;
 import main.java.fr.mrc.ptichat.processing.MessageHandler;
 import main.java.fr.mrc.ptichat.ui.ChatUI;
 
+import java.io.File;
+
 public class ChatManager {
 
     private AppManager am;
     private String messageToSend;
+    private String savedFilesDirectory = System.getProperty("user.dir") + File.separator + "new_";
     private ChatUI chatUI;
     public MessageHandler mh = new MessageHandler();
 
@@ -35,6 +38,8 @@ public class ChatManager {
         }
     }
 
+    public void receivedFile(String file) { this.chatUI.addFile(file);}
+
     public String getMessage(){
         String m = "";
         try {
@@ -57,5 +62,11 @@ public class ChatManager {
         this.messageToSend = m;
     }
 
+    public String getSavedFilesDirectory() {
+        return savedFilesDirectory;
+    }
 
+    public void setSavedFilesDirectory(String savedFilesDirectory) {
+        this.savedFilesDirectory = savedFilesDirectory;
+    }
 }

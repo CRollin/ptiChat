@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,13 +14,16 @@ public class ChatUI extends GenericUI {
 
     private JTextField chatInput;
     private JTextArea chatArea;
+    private JTextArea fileArea;
     private String peerIp;
     private boolean isPeerConnected;
     private ChatManager chatManager;
+    private FileChooserUI chooserUI;
 
     public ChatUI(ChatManager chatManager, String peerIp) {
         super("chatWindow");
         this.chatManager = chatManager;
+        this.chooserUI.chatManager = chatManager;
         this.peerIp = peerIp;
         this.isPeerConnected = this.peerIp != null;
         this.updateChatTitle();
@@ -50,9 +52,9 @@ public class ChatUI extends GenericUI {
         Dimension chatDim = this.createDimension("chatWindow.chatArea.width", "chatWindow.centerBar.height");
         this.chatArea = new JTextArea();
         Dimension fileDim = this.createDimension("chatWindow.fileArea.width", "chatWindow.centerBar.height");
-        JTextArea fileArea = new JTextArea();
+        this.fileArea = new JTextArea();
         this.initPane(chatDim, this.chatArea, null, container);
-        this.initPane(fileDim, fileArea, this.languagesController.getWord("FILE_TITLE"), container);
+        this.initPane(fileDim, this.fileArea, this.languagesController.getWord("FILE_TITLE"), container);
     }
 
     private void initPane(Dimension d, JTextArea ta, String s, Container c){
@@ -80,11 +82,14 @@ public class ChatUI extends GenericUI {
         this.chatInput.setPreferredSize(chatInputDim);
         //Create button
         JButton sendMessageButton = new JButton(this.languagesController.getWord("SEND"));
+        JButton sendFileButton = new JButton(this.languagesController.getWord("SEND_FILE"));
         Dimension buttonDim =   this.createDimension("chatWindow.button.width", "chatWindow.bottomBar.height");
         sendMessageButton.setPreferredSize(buttonDim);
+        sendFileButton.setPreferredSize(buttonDim);
         //Build component
         container.add(chatInput);
         container.add(sendMessageButton);
+        container.add(sendFileButton);
         sendMessageButton.addActionListener(e -> this.sendMessage());
         chatInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent e) {
@@ -92,6 +97,8 @@ public class ChatUI extends GenericUI {
                     sendMessage();
             }
         });
+        //Bind FileChooserUI to sendFileButton
+        this.chooserUI = new FileChooserUI(sendFileButton);
     }
 
     private void sendMessage(){
@@ -133,5 +140,13 @@ public class ChatUI extends GenericUI {
     private String formatChatInfo(String info) {
         return "\n" + "----------------------------------" + "\n" + info
                 + "\n" + "----------------------------------" + "\n";
+    }
+
+    /**
+     * Appends a new file to the list of received files.
+     * @param file the new received file
+     */
+    public void addFile(String file) {
+        this.fileArea.append(file + "\n");
     }
 }
