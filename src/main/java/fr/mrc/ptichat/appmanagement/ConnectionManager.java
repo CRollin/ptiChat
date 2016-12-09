@@ -7,6 +7,9 @@ import java.util.Hashtable;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * Manages the connection UI
+ */
 public class ConnectionManager {
     private AppManager am;
     private ConnectionUI cui;
