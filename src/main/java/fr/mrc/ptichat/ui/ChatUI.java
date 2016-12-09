@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -51,10 +51,9 @@ public class ChatUI extends GenericUI {
         flowLayout.setAlignment(FlowLayout.CENTER);
         Dimension chatDim = this.createDimension("chatWindow.chatArea.width", "chatWindow.centerBar.height");
         this.chatArea = new JTextArea();
-        String chatTitle = "";
         Dimension fileDim = this.createDimension("chatWindow.fileArea.width", "chatWindow.centerBar.height");
         this.fileArea = new JTextArea();
-        this.initPane(chatDim, this.chatArea, chatTitle, container);
+        this.initPane(chatDim, this.chatArea, null, container);
         this.initPane(fileDim, this.fileArea, this.languagesController.getWord("FILE_TITLE"), container);
     }
 
@@ -62,7 +61,9 @@ public class ChatUI extends GenericUI {
         ta.setEditable(false);
         ta.setBackground(Color.white);
         ta.setLineWrap(true);
-        ta.append(s + "\n");
+        if (s != null){
+            ta.append(s + "\n");
+        }
         DefaultCaret dc = (DefaultCaret)ta.getCaret();
         dc.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
         JScrollPane p = new JScrollPane();
@@ -89,41 +90,56 @@ public class ChatUI extends GenericUI {
         container.add(chatInput);
         container.add(sendMessageButton);
         container.add(sendFileButton);
-        sendMessageButton.addActionListener(e -> this.sendMessage(e));
+        sendMessageButton.addActionListener(e -> this.sendMessage());
+        chatInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    sendMessage();
+            }
+        });
+        //Bind FileChooserUI to sendFileButton
         this.chooserUI = new FileChooserUI(sendFileButton);
     }
 
-    private void sendMessage(ActionEvent e){
+    private void sendMessage(){
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String intro = "\n>>>>>>" + " Vous à " + sdf.format(cal.getTime()) + "\n";
+        String intro = "\n>>>>>> " + this.languagesController.getWord("SEND_INTRO") + " " + sdf.format(cal.getTime()) + "\n";
         String message = this.chatInput.getText();
-        String s = intro + message + "\n";
-        this.chatInput.setText("");
-        this.chatInput.grabFocus();
-        this.chatArea.append(s);
         this.chatManager.setMessage(message);
+        if (this.chatManager.mh.isTerminationMessage(message)) {
+            this.chatManager.leaveChat();
+        } else {
+            String s = intro + message + "\n";
+            this.chatInput.setText("");
+            this.chatInput.grabFocus();
+            this.chatArea.append(s);
+        }
+
     }
 
     public void addMessage(String m){
         if(this.isPeerConnected == false) {
-            this.peerIp = this.extractPeerIp(m);
             this.isPeerConnected = true;
             this.updateChatTitle();
         }
         this.chatArea.append(m);
     }
 
-    private String extractPeerIp(String m){
-        System.out.println(m);
-        return m.substring(m.indexOf("/") + 1, m.indexOf(":"));
+    public void handlePeerDisconnection(){
+        this.isPeerConnected = false;
+        this.chatArea.append(this.formatChatInfo(this.languagesController.getWord("PEER_DECO")));
     }
 
     private void updateChatTitle(){
-        String t = this.isPeerConnected ? this.languagesController.getWord("CHAT_TITLE") + " " + this.peerIp
+        String t = this.isPeerConnected ? this.languagesController.getWord("CHAT_TITLE")
                 :  this.languagesController.getWord("CHAT_WANTING_TITLE");
-        this.chatArea.append(t + "\n");
+        this.chatArea.append(this.formatChatInfo(t));
+    }
 
+    private String formatChatInfo(String info) {
+        return "\n" + "----------------------------------" + "\n" + info
+                + "\n" + "----------------------------------" + "\n";
     }
 
     /**

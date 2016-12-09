@@ -1,6 +1,7 @@
 package main.java.fr.mrc.ptichat.connection;
 
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 import java.io.*;
 import java.net.*;
@@ -11,6 +12,7 @@ import java.net.*;
  */
 public class ClientServer {
 
+    private LanguagesController languagesController = LanguagesController.getInstance();
     private ServerSocket serverSocket = null;
     private Thread acceptConnectionsThread;
 
@@ -19,16 +21,14 @@ public class ClientServer {
      */
     public void initiateClientServerSocket(int port, ChatManager chatManager){
         try {
-            // TODO: when linking this code to the UI, remove all the "System.out.println()" functions
             // Server initialisation
             System.out.println("\n###### Client's server socket Initialisation ######");
             this.serverSocket = new ServerSocket(port);
-            System.out.println("Server listening to the port " + serverSocket.getLocalPort());
             // Handle the connection requests
             this.acceptConnectionsThread = new Thread(new AcceptConnectionsRunnable(this.serverSocket, chatManager)); //, chatManager
             this.acceptConnectionsThread.start();
         } catch (IOException e){
-            System.out.println("The port is already used.");
+            System.err.println(languagesController.getWord("PORT_USED_EXCEPTION"));
         }
     }
 

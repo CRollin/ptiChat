@@ -1,5 +1,6 @@
 package main.java.fr.mrc.ptichat.appmanagement;
 
+import main.java.fr.mrc.ptichat.processing.MessageHandler;
 import main.java.fr.mrc.ptichat.ui.ChatUI;
 
 import java.io.File;
@@ -10,6 +11,7 @@ public class ChatManager {
     private String messageToSend;
     private String savedFilesDirectory = System.getProperty("user.dir") + File.separator + "new_";
     private ChatUI chatUI;
+    public MessageHandler mh = new MessageHandler();
 
     public ChatManager(AppManager am) {
         this.am = am;
@@ -23,8 +25,17 @@ public class ChatManager {
         this.chatUI.open();
     }
 
+    public void leaveChat() {
+        this.chatUI.dispose();
+        this.am.leaveChat();
+    }
+
     public void receivedMessage(String m) {
-        this.chatUI.addMessage(m);
+        if(mh.isTerminationMessage(m)){
+            this.chatUI.handlePeerDisconnection();
+        } else {
+            this.chatUI.addMessage(m);
+        }
     }
 
     public void receivedFile(String file) { this.chatUI.addFile(file);}
@@ -36,8 +47,6 @@ public class ChatManager {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
-                    // e.printStackTrace();
-                    // System.out.println("Input interrupted!");
                     return null;
                 }
             }

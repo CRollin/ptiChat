@@ -3,11 +3,13 @@ package main.java.fr.mrc.ptichat.appmanagement;
 import main.java.fr.mrc.ptichat.connection.Client;
 import main.java.fr.mrc.ptichat.connection.ClientServer;
 import main.java.fr.mrc.ptichat.exceptions.NoServerException;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 public class AppManager {
 
     private ConnectionManager connectionManager;
     private ChatManager chatManager;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
 
     public AppManager() {
@@ -26,6 +28,10 @@ public class AppManager {
         this.chatManager.open();
     }
 
+    public void leaveChat() {
+        this.connectionManager.open();
+    }
+
     public void initConnection(String peerIp, int peerPort, int userPort, String userName) {
         try {
             Client client = new Client();
@@ -38,7 +44,7 @@ public class AppManager {
             System.out.println("\n###### Server initialized ######");
             this.initChat(null);
         } catch (Exception e) {
-            this.connectionManager.handleConnectionError("C TOUT KC LOL");
+            this.connectionManager.handleConnectionError(languagesController.getWord("BROKEN"));
         }
     }
 
