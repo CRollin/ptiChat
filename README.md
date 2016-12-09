@@ -4,37 +4,51 @@
 This project is a school chat project for CentraleSupelec. The chat, written in Java, is using a peer-to-peer connection between the users.
 
 ## The latest version
-Details of the latest version can be found on the github repository : (here)[https://github.com/CRollin/ptiChat]
+Details of the latest version can be found on the github repository: (here)[https://github.com/CRollin/ptiChat]
 
 ## License
 Please see the file LICENSE.
 
 ## Features
-- Connect to one person
-- Send text messages
-- Send files using `/file /path/to/file` in the chat, for example `/file /Users/me/Documents/test.jpg`. Several extensions can be sent: .jpg, .png, .txt, .md, .pdf
-- Quit the chat using `/exit`
+- Connect to one peer using his IP and port
+- Choose where to save the files you will receive through this chat (default will be the location of the .jar)
+- Send text messages to your peer!
+- Send files using the afferent button in the chat. Several extensions can be sent: .jpg, .png, .txt, .md, .pdf
+- Go back to the Connection screen with `/exit`
 
 ## Installation
 
 ### Prerequisites
-- Java : http://www.oracle.com/technetwork/java/javase/downloads/index.html  
-- Maven : https://maven.apache.org/download.cgi#Installation  
+- Java 8: http://www.oracle.com/technetwork/java/javase/downloads/index.html  
+- Maven: https://maven.apache.org/download.cgi#Installation (if installing from source code)
 
-### Source code
+### From source
+
+#### Source code
 In order to get the source code either download the compressed package or make sure you have git installed and execute the following:  
 `$ git clone https://github.com/CRollin/ptiChat.git`  
 `$ cd ptiChat/`  
 
-### Open in IntelliJ
+#### Open in IntelliJ
 PtiChat was written in IntelliJ, but you should also be able to open it in Eclipse or Netbeans.
 
+### From jar
+`(!jarDownloaded) ? downloadJar() : profit();`
+
 ## How to use ?
-To use ptiChat, you first need to install the maven dependencies.  
-Then, you can run the project (or the class main.java). The UI will offer you the possibility to enter the required information.
+
+### From source
+To use ptiChat, you first need to install the maven dependencies.   
+Then, you can run the project (or the class main.java). The UI will let you enter the required information.
+
+### From jar
+If java is in your path:    
+`$ java -jar path/to/file.jar`  
+Otherwise:  
+`$ path/to/java -jar path/to/file.jar`
 
 ## Authors
-Written by : Melanie BERARD, Charles ROLLIN, Roxane ROUX.
+Written by: Melanie BERARD, Charles ROLLIN, Roxane ROUX.
 
 ## How to submit bug fixes or new features
 To implement new changes, developers should use the following steps:
