@@ -45,8 +45,9 @@ public class RequestRunnable implements Runnable {
                         try {
                             int i;
                             String[] messageParts = mh.getContentFromMessage(message);
-                            message = intro + mh.messageToFile(messageParts[1], messageParts[2], this.chatManager.getSavedFilesDirectory()) + "\n";
-                            this.chatManager.receivedFile(((i = messageParts[1].lastIndexOf(File.separator)) > 0) ? messageParts[1].substring(i+1) : messageParts[1]);
+                            String filePath = mh.messageToFile(messageParts[1], messageParts[2], this.chatManager.getSavedFilesDirectory());
+                            message = intro + languagesController.getWord("NEW_FILE_RECEIVED") + filePath + "\n";
+                            this.chatManager.receivedFile(((i = filePath.lastIndexOf(File.separator.replace("\\", "\\\\"))) > 0) ? filePath.substring(i+1) : filePath);
                         } catch (IOException e) {
                             message = e.getMessage();
                         }

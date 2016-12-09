@@ -17,10 +17,12 @@ public class ConnectionUI extends GenericUI {
     private Hashtable<String, JTextField> formFields;
     private JTextArea errorTextArea;
     private ConnectionManager cm;
+    private DirectoryChooserUI chooser;
 
     public ConnectionUI(ConnectionManager cm) {
         super("connectionWindow");
         this.cm = cm;
+        this.chooser.cm = cm;
     }
 
     /**
@@ -84,13 +86,17 @@ public class ConnectionUI extends GenericUI {
         container.setLayout(flowLayout);
         flowLayout.setAlignment(FlowLayout.RIGHT);
         JButton startButton = new JButton();
+        JButton dirPathButton = new JButton();
         startButton.setText(this.languagesController.getWord("START"));
+        dirPathButton.setText(this.languagesController.getWord("SET_DIR_PATH"));
         startButton.addActionListener(e -> this.start(e));
+        this.chooser = new DirectoryChooserUI(dirPathButton);
         this.errorTextArea = new JTextArea();
         this.errorTextArea.setBackground(container.getBackground());
         this.errorTextArea.setEditable(false);
         this.errorTextArea.setForeground(Color.red);
         container.add(this.errorTextArea);
+        container.add(dirPathButton);
         container.add(startButton);
     }
 
