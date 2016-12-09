@@ -52,11 +52,10 @@ Otherwise:
 ## Limitations
 
 - Cross-OS issues:
-    - Sending files from Windows to Mac won't work (files are correctly received but not saved)
+    - Sending files from Mac to Windows won't work (files are correctly received but not saved)
     - Some encoding issues between OS in text messages
 - No feedbacks on file shipment:
     - the user doesn't receive a notification message when his peer has not correctly received a file
-    - neither does the user receive a notification when a file was correctly received and saved by the peer
 
 ## Authors
 Written by: Melanie BERARD, Charles ROLLIN, Roxane ROUX.
