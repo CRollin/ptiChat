@@ -5,6 +5,9 @@ import main.java.fr.mrc.ptichat.ui.ChatUI;
 
 import java.io.File;
 
+/**
+ * Manages the chat UI
+ */
 public class ChatManager {
 
     private AppManager am;
