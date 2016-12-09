@@ -2,6 +2,7 @@ package main.java.fr.mrc.ptichat.connection;
 
 import main.java.fr.mrc.ptichat.appmanagement.ChatManager;
 import main.java.fr.mrc.ptichat.processing.MessageHandler;
+import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ public class ResponseRunnable implements Runnable {
     private MessageHandler mh = new MessageHandler();
     private Flag stopFlag;
     private ChatManager chatManager;
+    private LanguagesController languagesController = LanguagesController.getInstance();
 
     public ResponseRunnable(PrintWriter out, InetAddress address, int port, Flag stopFlag, ChatManager chatManager){
         this.address = address;
@@ -38,6 +40,7 @@ public class ResponseRunnable implements Runnable {
                     String[] messageParts = mh.getContentFromMessage(message);
                     String file = mh.fileToString(messageParts[1]);
                     message = message + " " + file;
+                    this.chatManager.receivedMessage(this.languagesController.getWord("FILE_SENT"));
                 }
                 this.out.println(message);
                 this.out.flush();

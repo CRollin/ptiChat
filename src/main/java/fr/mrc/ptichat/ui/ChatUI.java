@@ -7,6 +7,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -27,6 +29,13 @@ public class ChatUI extends GenericUI {
         this.peerIp = peerIp;
         this.isPeerConnected = this.peerIp != null;
         this.updateChatTitle();
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                exitChat();
+            }
+        });
     }
 
     @Override
@@ -148,5 +157,10 @@ public class ChatUI extends GenericUI {
      */
     public void addFile(String file) {
         this.fileArea.append(file + "\n");
+    }
+
+    public void exitChat() {
+        this.chatManager.setMessage("/exit");
+        this.chatManager.leaveChat();
     }
 }
