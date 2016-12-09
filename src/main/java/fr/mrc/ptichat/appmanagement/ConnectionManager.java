@@ -1,8 +1,5 @@
 package main.java.fr.mrc.ptichat.appmanagement;
 
-import main.java.fr.mrc.ptichat.connection.Client;
-import main.java.fr.mrc.ptichat.connection.ClientServer;
-import main.java.fr.mrc.ptichat.exceptions.NoServerException;
 import main.java.fr.mrc.ptichat.ui.ConnectionUI;
 import main.java.fr.mrc.ptichat.utils.LanguagesController;
 
@@ -14,6 +11,7 @@ public class ConnectionManager {
     private AppManager am;
     private ConnectionUI cui;
     private LanguagesController languagesController = LanguagesController.getInstance();
+    private String savedFilesDirectory = "";
 
     public ConnectionManager(AppManager am) {
         this.am = am;
@@ -65,5 +63,13 @@ public class ConnectionManager {
         return parseInt(connectionData.get("USER_PORT"));
     }
 
+
+    public String getSavedFilesDirectory() {
+        return savedFilesDirectory;
+    }
+
+    public void setSavedFilesDirectory(String savedFilesDirectory) {
+        this.savedFilesDirectory = savedFilesDirectory;
+    }
 
 }

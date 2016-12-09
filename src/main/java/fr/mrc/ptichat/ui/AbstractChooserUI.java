@@ -1,7 +1,5 @@
 package main.java.fr.mrc.ptichat.ui;
 
-import main.java.fr.mrc.ptichat.utils.MessageSignatureController;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +7,8 @@ import java.awt.event.ActionListener;
 public abstract class AbstractChooserUI extends JPanel implements ActionListener {
     protected JFileChooser chooser;
     protected boolean filesOnly;
+    protected String title = "";
+    private String lastPath = ".";
 
     public AbstractChooserUI(JButton button, boolean filesOnly) {
         button.addActionListener(this);
@@ -18,10 +18,9 @@ public abstract class AbstractChooserUI extends JPanel implements ActionListener
     protected abstract void performSideEffectAction(String selection);
 
     public void actionPerformed(ActionEvent e) {
-        MessageSignatureController msc = new MessageSignatureController();
         chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("");
+        chooser.setCurrentDirectory(new java.io.File(this.lastPath));
+        chooser.setDialogTitle(this.title);
         chooser.setFileSelectionMode(this.filesOnly ? JFileChooser.FILES_ONLY : JFileChooser.DIRECTORIES_ONLY);
         //
         // disable the "All files" option.
@@ -29,7 +28,8 @@ public abstract class AbstractChooserUI extends JPanel implements ActionListener
         chooser.setAcceptAllFileFilterUsed(false);
         //
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            this.performSideEffectAction(chooser.getSelectedFile().toString());
+            this.lastPath = chooser.getSelectedFile().toString();
+            this.performSideEffectAction(this.lastPath);
         }
     }
 
