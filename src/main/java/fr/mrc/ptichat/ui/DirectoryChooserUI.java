@@ -16,6 +16,6 @@ public class DirectoryChooserUI extends AbstractChooserUI {
 
     @Override
     protected void performSideEffectAction(String selection) {
-        this.cm.setSavedFilesDirectory(selection + File.separator);
+        this.cm.setSavedFilesDirectory(selection + File.separator.replace("\\", "\\\\"));
     }
 }

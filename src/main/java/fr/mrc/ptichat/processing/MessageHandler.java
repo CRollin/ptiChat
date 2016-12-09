@@ -45,7 +45,7 @@ public class MessageHandler {
      * @return <code>String</code>
      */
     public String buildUserFilePath(String sentFilepath, String userDirPath){
-        String[] dir = sentFilepath.split(File.separator);
+        String[] dir = sentFilepath.split(File.separator.replace("\\", "\\\\"));
         return userDirPath + dir[dir.length - 1];
     }
 
