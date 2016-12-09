@@ -10,11 +10,11 @@ Details of the latest version can be found on the github repository: (here)[http
 Please see the file LICENSE.
 
 ## Features
-- Connect to one peer using his IP and port
-- Choose where to save the files you will receive through this chat (default will be the location of the .jar)
+- Connect to a peer using his IP and port
+- Choose where to save the files you will receive through this chat (default will be the current working directory)
 - Send text messages to your peer!
-- Send files using the afferent button in the chat. Several extensions can be sent: .jpg, .png, .txt, .md, .pdf
-- Go back to the Connection screen with `/exit`
+- Send files using the afferent button in the chat. Several extensions can be sent: .jpg, .png, .txt, .md, .pdf, ...
+- Close the Chat screen to go back to the Connection screen
 
 ## Installation
 
@@ -30,7 +30,9 @@ In order to get the source code either download the compressed package or make s
 `$ cd ptiChat/`  
 
 #### Open in IntelliJ
-PtiChat was written in IntelliJ, but you should also be able to open it in Eclipse or Netbeans.
+PtiChat was written in IntelliJ, but you should also be able to open it in Eclipse or Netbeans.     
+The project might not build at first in IntelliJ, as our source folder is /src (instead of default /src/main/java for IntelliJ).    
+Go to File > Project Structure to fix this.
 
 ### From jar
 `(!jarDownloaded) ? downloadJar() : profit();`
@@ -46,6 +48,15 @@ If java is in your path:
 `$ java -jar path/to/file.jar`  
 Otherwise:  
 `$ path/to/java -jar path/to/file.jar`
+
+## Limitations
+
+- Cross-OS issues:
+    - Sending files from Windows to Mac won't work (files are correctly received but not saved)
+    - Some encoding issues between OS in text messages
+- No feedbacks on file shipment:
+    - the user doesn't receive a notification message when his peer has not correctly received a file
+    - neither does the user receive a notification when a file was correctly received and saved by the peer
 
 ## Authors
 Written by: Melanie BERARD, Charles ROLLIN, Roxane ROUX.
